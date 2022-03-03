@@ -80,7 +80,7 @@ class _MyDrawerState extends State<MyDrawer> {
               DrawerItem(
                 drawerWidth: drawerWidth,
                 icon: Icons.folder_outlined,
-                title: 'Docmuments',
+                title: 'Documents',
                 value: '/documents',
                 drawerState: drawerOpen,
                 onTap: (value) {
