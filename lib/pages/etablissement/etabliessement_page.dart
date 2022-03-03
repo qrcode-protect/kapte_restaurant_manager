@@ -1,0 +1,394 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:libertyrestaurant/models/restaurant/restaurant.dart';
+import 'package:libertyrestaurant/pages/documents/documents_page.dart';
+import 'package:libertyrestaurant/state_management/state_management.dart';
+import 'package:libertyrestaurant/widgets/detail_save_button.dart';
+
+var etablissementProvider =
+    ChangeNotifierProvider.autoDispose<EtablissementState>(
+        (ref) => EtablissementState());
+
+class EtablissementState with ChangeNotifier {
+  Restaurant? restaurant;
+  bool drawerValue = false;
+  String? restaurantAvatar;
+
+  setRestaurantAvatar(String path) {
+    restaurantAvatar = path;
+    notifyListeners();
+  }
+
+  selectedRestaurant(Restaurant? restaurant) {
+    this.restaurant = restaurant;
+    if (restaurant != null) {
+      restaurantAvatar = restaurant.avatar;
+      drawerValue = true;
+    } else {
+      drawerValue = false;
+    }
+    notifyListeners();
+  }
+}
+
+class EtablissementPage extends ConsumerStatefulWidget {
+  const EtablissementPage({Key? key}) : super(key: key);
+  @override
+  _EtablissementPageState createState() => _EtablissementPageState();
+}
+
+class _EtablissementPageState extends ConsumerState<EtablissementPage> {
+  @override
+  Widget build(BuildContext context) {
+    final utilisateur = ref.watch(appStateProvider).utilisateur;
+    return Scaffold(
+      body: utilisateur == null
+          ? const SizedBox.shrink()
+          : utilisateur.idRestaurant == '' || utilisateur.idRestaurant == null
+              ? const SizedBox.shrink()
+              : Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: StreamBuilder<DocumentSnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('list_restaurant')
+                            .doc(utilisateur.idRestaurant)
+                            .snapshots(),
+                        builder: (context,
+                            AsyncSnapshot<DocumentSnapshot>
+                                restaurantSnapshot) {
+                          if (restaurantSnapshot.hasError) {
+                            return const Center(child: Text('error'));
+                          }
+                          if (restaurantSnapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const LinearProgressIndicator();
+                          }
+                          if (restaurantSnapshot.data!.data() != null) {
+                            final restaurant = Restaurant.fromJson(
+                                restaurantSnapshot.data!.data()
+                                    as Map<String, dynamic>);
+                            return Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: ListView(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Restaurants',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline2!
+                                            .copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                      ),
+                                      const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 40.0),
+                                        child: SizedBox(
+                                          height: 40,
+                                          child: ElevatedButton(
+                                            onPressed: null,
+                                            child: Text(
+                                                'Ajouter un Etablissement'),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Wrap(
+                                    children: [
+                                      SizedBox(
+                                        width: 440,
+                                        child: Card(
+                                          child: InkWell(
+                                            onTap: () {
+                                              ref
+                                                  .read(etablissementProvider)
+                                                  .selectedRestaurant(
+                                                      restaurant);
+                                            },
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Row(
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Stack(
+                                                        children: [
+                                                          restaurant.avatar!
+                                                                  .isNotEmpty
+                                                              ? CircleAvatar(
+                                                                  radius: 30,
+                                                                  backgroundImage:
+                                                                      NetworkImage(
+                                                                          restaurant
+                                                                              .avatar!),
+                                                                )
+                                                              : const CircleAvatar(
+                                                                  radius: 30,
+                                                                  child: Icon(Icons
+                                                                      .storefront),
+                                                                ),
+                                                          Positioned(
+                                                            bottom: 0.0,
+                                                            right: 0.0,
+                                                            child: ClipOval(
+                                                              child: Container(
+                                                                height: 25,
+                                                                width: 25,
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    '4.7',
+                                                                    style: Theme.of(
+                                                                            context)
+                                                                        .textTheme
+                                                                        .headline6!
+                                                                        .copyWith(
+                                                                          fontSize:
+                                                                              9.0,
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
+                                                                  ),
+                                                                ),
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .secondaryHeaderColor,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      const SizedBox(
+                                                          width: 10.0),
+                                                      SizedBox(
+                                                        width: 240,
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Text(restaurant
+                                                                .nom!),
+                                                            Text(
+                                                              '${restaurant.adresse!.rue}, ${restaurant.adresse!.codepostal} ${restaurant.adresse!.ville}',
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                          width: 10.0),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      const Text('En ligne'),
+                                                      Switch(
+                                                        value:
+                                                            restaurant.enLigne!,
+                                                        onChanged:
+                                                            restaurant.avatar!
+                                                                    .isNotEmpty
+                                                                ? (value) {
+                                                                    FirebaseFirestore
+                                                                        .instance
+                                                                        .collection(
+                                                                            'list_restaurant')
+                                                                        .doc(utilisateur
+                                                                            .idRestaurant)
+                                                                        .update({
+                                                                      'enLigne':
+                                                                          value
+                                                                    });
+                                                                  }
+                                                                : (value) {
+                                                                    ScaffoldMessenger.of(
+                                                                            context)
+                                                                        .showSnackBar(
+                                                                      SnackBar(
+                                                                        content:
+                                                                            const Text(
+                                                                          'Veillez ajouter une image pour la mise en ligne',
+                                                                        ),
+                                                                        backgroundColor:
+                                                                            Theme.of(context).secondaryHeaderColor,
+                                                                        duration:
+                                                                            const Duration(milliseconds: 500),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ),
+                    Consumer(builder: (context, ref, _) {
+                      final etablissementState =
+                          ref.watch(etablissementProvider);
+                      return etablissementState.drawerValue
+                          ? Expanded(
+                              flex: 2,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    left: BorderSide(
+                                        color: Theme.of(context).dividerColor),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    AppBar(
+                                      backgroundColor: Theme.of(context)
+                                          .secondaryHeaderColor,
+                                      actions: [
+                                        DetailSaveButton(
+                                          onPressedSave: etablissementState
+                                                      .restaurant !=
+                                                  null
+                                              ? () {
+                                                  FirebaseFirestore.instance
+                                                      .collection(
+                                                          'list_restaurant')
+                                                      .doc(etablissementState
+                                                          .restaurant!.id)
+                                                      .update({
+                                                    'avatar': etablissementState
+                                                        .restaurantAvatar
+                                                  });
+                                                }
+                                              : null,
+                                        ),
+                                        IconButton(
+                                          onPressed: () {
+                                            ref
+                                                .read(etablissementProvider)
+                                                .selectedRestaurant(null);
+                                          },
+                                          icon: Icon(
+                                            Icons.close,
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                          ),
+                                          splashRadius: 20.0,
+                                        )
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 220,
+                                      child: AspectRatio(
+                                        aspectRatio: 16 / 9,
+                                        child: etablissementState
+                                                .restaurantAvatar!.isNotEmpty
+                                            ? Stack(
+                                                children: [
+                                                  Container(
+                                                    decoration: BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            etablissementState
+                                                                .restaurantAvatar!),
+                                                        fit: BoxFit.fill,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                    bottom: 0.0,
+                                                    right: 0.0,
+                                                    child: IconButton(
+                                                      onPressed: () =>
+                                                          showDialog(
+                                                        barrierDismissible:
+                                                            false,
+                                                        context: context,
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            const Dialog(
+                                                          elevation: 2,
+                                                          child: DocumentsPage(
+                                                            onNavigate: true,
+                                                          ),
+                                                        ),
+                                                      ).then((value) {
+                                                        if (value != null) {
+                                                          ref
+                                                              .read(
+                                                                  etablissementProvider)
+                                                              .setRestaurantAvatar(
+                                                                  value);
+                                                        }
+                                                      }),
+                                                      icon: Icon(
+                                                        Icons.photo_camera,
+                                                        color: Theme.of(context)
+                                                            .primaryColor,
+                                                      ),
+                                                      splashRadius: 20.0,
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            : SizedBox(
+                                                child: Center(
+                                                  child: IconButton(
+                                                    icon:
+                                                        const Icon(Icons.image),
+                                                    onPressed: () => showDialog(
+                                                      barrierDismissible: false,
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          const Dialog(
+                                                        elevation: 2,
+                                                        child: DocumentsPage(
+                                                          onNavigate: true,
+                                                        ),
+                                                      ),
+                                                    ).then((value) {
+                                                      if (value != null) {
+                                                        ref
+                                                            .read(
+                                                                etablissementProvider)
+                                                            .setRestaurantAvatar(
+                                                                value);
+                                                      }
+                                                    }),
+                                                  ),
+                                                ),
+                                              ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          : SizedBox.fromSize();
+                    })
+                  ],
+                ),
+    );
+  }
+}
