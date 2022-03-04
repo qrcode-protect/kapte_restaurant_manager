@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/saka/projects/kapte_cms/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-be/values-be.xml",
+            "outputFile": "/home/saka/projects/kapte/kapte_cms/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-be/values-be.xml",
             "map": [
                 {
                     "source": "/home/saka/.gradle/caches/transforms-2/files-2.1/3379954b54da4c690bd742f1e4b2cf6f/jetified-play-services-base-17.1.0/res/values-be/values.xml",

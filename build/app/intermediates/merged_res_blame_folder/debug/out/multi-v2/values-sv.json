@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/home/saka/projects/kapte_cms/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-sv/values-sv.xml",
+            "outputFile": "/home/saka/projects/kapte/kapte_cms/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-sv/values-sv.xml",
             "map": [
                 {
                     "source": "/home/saka/.gradle/caches/transforms-2/files-2.1/5f663b08eec19eef9a9d1af662d9025e/core-1.6.0/res/values-sv/values-sv.xml",

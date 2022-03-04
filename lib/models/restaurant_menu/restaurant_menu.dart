@@ -20,6 +20,18 @@ class RestaurantMenu {
   final double prix;
   String? description;
 
+  setCategorie(Categorie categorie) {
+    this.categorie = categorie;
+  }
+
+  setAvatar(String avatar) {
+    this.avatar = avatar;
+  }
+
+  setDescription(String description) {
+    this.description = description;
+  }
+
   factory RestaurantMenu.fromJson(Map<String, dynamic> json) =>
       _$RestaurantMenuFromJson(json);
   Map<String, dynamic> toJson() => _$RestaurantMenuToJson(this);

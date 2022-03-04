@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/saka/projects/kapte_cms/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
+            "outputFile": "/home/saka/projects/kapte/kapte_cms/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-night-v8/values-night-v8.xml",
             "map": [
                 {
-                    "source": "/home/saka/projects/kapte_cms/android/app/src/main/res/values-night/styles.xml",
+                    "source": "/home/saka/projects/kapte/kapte_cms/android/app/src/main/res/values-night/styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",

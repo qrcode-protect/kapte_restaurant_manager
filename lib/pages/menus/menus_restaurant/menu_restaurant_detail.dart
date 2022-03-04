@@ -145,6 +145,28 @@ class _MenuDetailState extends State<MenuDetail> {
       final menuDetailState = ref.watch(menuDetailProvider);
       final menuState = ref.watch(menuProvider);
       final appState = ref.watch(appStateProvider);
+
+      RestaurantMenu createRestaurantMenu() {
+        RestaurantMenu updateRestaurantMenu = RestaurantMenu(
+          id: menuState.restaurantMenu!.id,
+          nom: menuState.restaurantMenu!.nom,
+          prix: menuState.restaurantMenu!.prix,
+          avatar: menuDetailState.menuAvatar,
+        );
+        if (menuDetailState.categorieDropdownValue != null) {
+          updateRestaurantMenu
+              .setCategorie(menuDetailState.categorieDropdownValue!);
+        }
+        if (menuDetailState.descriptionMenuController != null) {
+          updateRestaurantMenu
+              .setDescription(menuDetailState.descriptionMenuController!.text);
+        }
+        if (menuDetailState.menuAvatar != null) {
+          updateRestaurantMenu.setAvatar(menuDetailState.menuAvatar!);
+        }
+        return updateRestaurantMenu;
+      }
+
       return menuState.restaurantMenu != null && appState.user != null
           ? Expanded(
               child: Scaffold(
@@ -171,20 +193,8 @@ class _MenuDetailState extends State<MenuDetail> {
                                         .doc(appState.utilisateur!.idRestaurant)
                                         .collection('menus')
                                         .doc(menuState.restaurantMenu!.id)
-                                        .update({
-                                      'avatar': menuDetailState.menuAvatar,
-                                      'nom': menuDetailState
-                                          .nomMenuController!.value.text,
-                                      'prix': double.parse(menuDetailState
-                                          .prixMenuController!.value.text),
-                                      'description': menuDetailState
-                                          .descriptionMenuController!
-                                          .value
-                                          .text,
-                                      'categorie': menuDetailState
-                                          .categorieDropdownValue!
-                                          .toJson(),
-                                    });
+                                        .update(
+                                            createRestaurantMenu().toJson());
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                         content: Text(
