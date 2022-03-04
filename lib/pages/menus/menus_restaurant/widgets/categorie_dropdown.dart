@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/models/categorie/categorie.dart';
-import 'package:libertyrestaurant/pages/menus/menus_restaurant/menu_restaurant_detail.dart';
-import 'package:libertyrestaurant/pages/menus/menus_restaurant/menus_restaurant.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
+import 'package:kapte_cms/models/categorie/categorie.dart';
+import 'package:kapte_cms/pages/menus/menus_restaurant/menu_restaurant_detail.dart';
+import 'package:kapte_cms/pages/menus/menus_restaurant/menus_restaurant.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
 
 class CategorieDropdown extends StatelessWidget {
   const CategorieDropdown({

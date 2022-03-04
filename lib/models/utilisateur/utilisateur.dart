@@ -16,7 +16,7 @@ class Utilisateur {
   final String id;
   final String nom;
   final String email;
-  final int phone;
+  final String phone;
   final String token;
   final String avatar;
   String? idRestaurant;

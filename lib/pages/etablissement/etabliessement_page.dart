@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/models/restaurant/restaurant.dart';
-import 'package:libertyrestaurant/pages/documents/documents_page.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
-import 'package:libertyrestaurant/widgets/detail_save_button.dart';
+import 'package:kapte_cms/models/restaurant/restaurant.dart';
+import 'package:kapte_cms/pages/documents/documents_page.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
+import 'package:kapte_cms/widgets/detail_save_button.dart';
 
 var etablissementProvider =
     ChangeNotifierProvider.autoDispose<EtablissementState>(

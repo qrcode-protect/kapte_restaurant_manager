@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/models/adresse/adresse.dart';
-import 'package:libertyrestaurant/models/categorie/categorie.dart';
-import 'package:libertyrestaurant/models/restaurant/restaurant.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
-import 'package:libertyrestaurant/widgets/custom_input.dart';
-import 'package:libertyrestaurant/widgets/popup_bottom_button.dart';
+import 'package:kapte_cms/models/adresse/adresse.dart';
+import 'package:kapte_cms/models/categorie/categorie.dart';
+import 'package:kapte_cms/models/restaurant/restaurant.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
+import 'package:kapte_cms/widgets/custom_input.dart';
+import 'package:kapte_cms/widgets/popup_bottom_button.dart';
 
 class AjouterEtablissement extends ConsumerStatefulWidget {
   const AjouterEtablissement({Key? key}) : super(key: key);

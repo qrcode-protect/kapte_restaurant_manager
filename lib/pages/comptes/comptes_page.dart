@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/models/utilisateur/utilisateur.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
+import 'package:kapte_cms/models/utilisateur/utilisateur.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
 
 class ComptesPage extends StatelessWidget {
   const ComptesPage({Key? key}) : super(key: key);

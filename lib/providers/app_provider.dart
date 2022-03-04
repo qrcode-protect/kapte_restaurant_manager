@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_login_package/firebase_login_package.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:libertyrestaurant/models/utilisateur/utilisateur.dart';
-import 'package:libertyrestaurant/services/data.dart';
+import 'package:kapte_cms/models/utilisateur/utilisateur.dart';
+import 'package:kapte_cms/services/data.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 

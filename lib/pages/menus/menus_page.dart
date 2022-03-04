@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/pages/menus/categories_restaurant/categorie_restaurant_detail.dart';
-import 'package:libertyrestaurant/pages/menus/groupe_produits_restaurant/groupes_poduits_restaurant.dart';
-import 'package:libertyrestaurant/pages/menus/groupe_produits_restaurant/groupe_produits_restaurant_detail.dart';
-import 'package:libertyrestaurant/pages/menus/menus_restaurant/menu_groupe_produits.dart';
-import 'package:libertyrestaurant/pages/menus/menus_restaurant/menu_restaurant_detail.dart';
+import 'package:kapte_cms/pages/menus/categories_restaurant/categorie_restaurant_detail.dart';
+import 'package:kapte_cms/pages/menus/groupe_produits_restaurant/groupes_poduits_restaurant.dart';
+import 'package:kapte_cms/pages/menus/groupe_produits_restaurant/groupe_produits_restaurant_detail.dart';
+import 'package:kapte_cms/pages/menus/menus_restaurant/menu_groupe_produits.dart';
+import 'package:kapte_cms/pages/menus/menus_restaurant/menu_restaurant_detail.dart';
 
 import 'categories_restaurant/categories_restaurant.dart';
 import 'menus_restaurant/menus_restaurant.dart';

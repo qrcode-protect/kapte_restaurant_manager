@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/models/restaurant_menu_categorie/restaurant_menu_categorie.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
+import 'package:kapte_cms/models/restaurant_menu_categorie/restaurant_menu_categorie.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
 
 final categorieProvider =
     ChangeNotifierProvider.autoDispose<CategorieStateProvider>(

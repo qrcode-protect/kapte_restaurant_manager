@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:libertyrestaurant/models/categorie/categorie.dart';
+import 'package:kapte_cms/models/categorie/categorie.dart';
 
 part 'restaurant_menu.g.dart';
 

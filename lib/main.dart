@@ -3,11 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/routing/delegate.dart';
-import 'package:libertyrestaurant/routing/parser.dart';
-import 'package:libertyrestaurant/routing/route_state.dart';
-import 'package:libertyrestaurant/pages/main_sreen.dart';
-import 'package:libertyrestaurant/theme.dart';
+import 'package:kapte_cms/routing/delegate.dart';
+import 'package:kapte_cms/routing/parser.dart';
+import 'package:kapte_cms/routing/route_state.dart';
+import 'package:kapte_cms/pages/main_sreen.dart';
+import 'package:kapte_cms/theme.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 const firebaseKapteConfig = FirebaseOptions(

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:libertyrestaurant/models/utilisateur/utilisateur.dart';
+import 'package:kapte_cms/models/utilisateur/utilisateur.dart';
 
 class Data {
   late Utilisateur utilisateur;
@@ -33,8 +33,8 @@ class Data {
             avatar: FirebaseAuth.instance.currentUser!.photoURL ?? '',
             email: FirebaseAuth.instance.currentUser!.email ?? '',
             nom: FirebaseAuth.instance.currentUser!.displayName ?? '',
-            phone: int.parse(
-                FirebaseAuth.instance.currentUser!.phoneNumber ?? '0600000000'),
+            phone:
+                FirebaseAuth.instance.currentUser!.phoneNumber ?? '0600000000',
             token: '',
           ).toJson(),
         )

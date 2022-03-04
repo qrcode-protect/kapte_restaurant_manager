@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/routing/route_state.dart';
-import 'package:libertyrestaurant/widgets/drawer_item.dart';
+import 'package:kapte_cms/routing/route_state.dart';
+import 'package:kapte_cms/widgets/drawer_item.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({

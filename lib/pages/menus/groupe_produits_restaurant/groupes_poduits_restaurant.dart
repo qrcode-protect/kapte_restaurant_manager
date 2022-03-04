@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/models/restaurant_groupe_produits/restaurant_groupe_produits.dart';
-import 'package:libertyrestaurant/pages/menus/groupe_produits_restaurant/groupe_produits_restaurant_detail.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
+import 'package:kapte_cms/models/restaurant_groupe_produits/restaurant_groupe_produits.dart';
+import 'package:kapte_cms/pages/menus/groupe_produits_restaurant/groupe_produits_restaurant_detail.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
 
 var groupeProduitsProvider =
     ChangeNotifierProvider.autoDispose<GroupeProduitsStateProvider>(

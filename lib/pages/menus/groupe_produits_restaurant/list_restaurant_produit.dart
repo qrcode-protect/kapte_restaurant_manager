@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/models/restautrant_produit/restaurant_produit.dart';
-import 'package:libertyrestaurant/pages/menus/groupe_produits_restaurant/groupes_poduits_restaurant.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
+import 'package:kapte_cms/models/restautrant_produit/restaurant_produit.dart';
+import 'package:kapte_cms/pages/menus/groupe_produits_restaurant/groupes_poduits_restaurant.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
 
 final ajouterProduitProvider =
     StateNotifierProvider<AjouterProduitState, bool>((ref) {

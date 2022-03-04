@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/login/login_page.dart';
-import 'package:libertyrestaurant/models/utilisateur/utilisateur.dart';
-import 'package:libertyrestaurant/pages/etablissement/ajouter_etablissement.dart';
-import 'package:libertyrestaurant/pages/pages.dart';
-import 'package:libertyrestaurant/routing/route_state.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
-import 'package:libertyrestaurant/widgets/fade_transition.dart';
-import 'package:libertyrestaurant/widgets/my_drawer.dart';
+import 'package:kapte_cms/login/login_page.dart';
+import 'package:kapte_cms/models/utilisateur/utilisateur.dart';
+import 'package:kapte_cms/pages/etablissement/ajouter_etablissement.dart';
+import 'package:kapte_cms/pages/pages.dart';
+import 'package:kapte_cms/routing/route_state.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
+import 'package:kapte_cms/widgets/fade_transition.dart';
+import 'package:kapte_cms/widgets/my_drawer.dart';
 
 const drawerOpenWidth = 240.0;
 const drawerCloseWidth = 60.0;

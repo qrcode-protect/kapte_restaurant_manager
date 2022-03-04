@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/models/restaurant_menu/restaurant_menu.dart';
-import 'package:libertyrestaurant/pages/menus/menus_restaurant/menu_restaurant_detail.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
+import 'package:kapte_cms/models/restaurant_menu/restaurant_menu.dart';
+import 'package:kapte_cms/pages/menus/menus_restaurant/menu_restaurant_detail.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
 
 final menuProvider =
     ChangeNotifierProvider.autoDispose<MenuStateProvider>((ref) {

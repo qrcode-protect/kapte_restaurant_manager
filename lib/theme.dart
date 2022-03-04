@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 late String? _fontFamily = GoogleFonts.poppins().fontFamily;
 
 var themeLight = FlexThemeData.light(
-  primary: const Color(0xFF005691),
-  secondary: const Color(0xFF005691),
+  primary: const Color(0xFF4BC4C4),
+  secondary: const Color(0xFF4BC4C4),
   scaffoldBackground: const Color(0xFFFAFAFA),
   textTheme: _textTheme,
   fontFamily: _fontFamily,

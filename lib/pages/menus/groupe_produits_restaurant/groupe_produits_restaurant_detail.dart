@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/models/restaurant_groupe_produits/restaurant_groupe_produits.dart';
-import 'package:libertyrestaurant/pages/menus/groupe_produits_restaurant/groupes_poduits_restaurant.dart';
-import 'package:libertyrestaurant/pages/menus/groupe_produits_restaurant/list_restaurant_produit.dart';
-import 'package:libertyrestaurant/pages/menus/groupe_produits_restaurant/widgets/dropdown_requis.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
-import 'package:libertyrestaurant/widgets/custom_input.dart';
-import 'package:libertyrestaurant/widgets/detail_save_button.dart';
+import 'package:kapte_cms/models/restaurant_groupe_produits/restaurant_groupe_produits.dart';
+import 'package:kapte_cms/pages/menus/groupe_produits_restaurant/groupes_poduits_restaurant.dart';
+import 'package:kapte_cms/pages/menus/groupe_produits_restaurant/list_restaurant_produit.dart';
+import 'package:kapte_cms/pages/menus/groupe_produits_restaurant/widgets/dropdown_requis.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
+import 'package:kapte_cms/widgets/custom_input.dart';
+import 'package:kapte_cms/widgets/detail_save_button.dart';
 
 var groupeProduitsDetailProvider =
     ChangeNotifierProvider.autoDispose<GroupePdosuitsDetailStateProvider>(

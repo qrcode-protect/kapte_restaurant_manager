@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/pages/documents/documents_page.dart';
+import 'package:kapte_cms/pages/documents/documents_page.dart';
 
 final openInfoProvider = StateNotifierProvider<OpenInfoState, bool>((ref) {
   return OpenInfoState();

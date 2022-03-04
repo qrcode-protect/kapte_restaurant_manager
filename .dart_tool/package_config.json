@@ -225,21 +225,27 @@
     },
     {
       "name": "firebase_core_platform_interface",
-      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.2.4",
+      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_platform_interface-4.2.5",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.16"
     },
     {
       "name": "firebase_core_web",
-      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.5.4",
+      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.6.1",
       "packageUri": "lib/",
-      "languageVersion": "2.12"
+      "languageVersion": "2.16"
     },
     {
       "name": "firebase_login_package",
       "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/git/firebase_login_package-84b0a4a95fad7ffaf5ef776334ac3c9611e9d31c/",
       "packageUri": "lib/",
       "languageVersion": "2.14"
+    },
+    {
+      "name": "firebase_messaging_platform_interface",
+      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_messaging_platform_interface-3.1.6",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "firebase_storage",
@@ -728,13 +734,13 @@
       "languageVersion": "2.12"
     },
     {
-      "name": "libertyrestaurant",
+      "name": "kapte_cms",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     }
   ],
-  "generated": "2022-03-03T14:52:02.450597Z",
+  "generated": "2022-03-04T12:50:20.118875Z",
   "generator": "pub",
   "generatorVersion": "2.16.1"
 }

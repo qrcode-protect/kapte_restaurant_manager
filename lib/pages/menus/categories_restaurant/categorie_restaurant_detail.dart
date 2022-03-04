@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/models/restaurant_menu_categorie/restaurant_menu_categorie.dart';
-import 'package:libertyrestaurant/pages/menus/categories_restaurant/categories_restaurant.dart';
-import 'package:libertyrestaurant/state_management/state_management.dart';
-import 'package:libertyrestaurant/widgets/custom_input.dart';
-import 'package:libertyrestaurant/widgets/detail_save_button.dart';
+import 'package:kapte_cms/models/restaurant_menu_categorie/restaurant_menu_categorie.dart';
+import 'package:kapte_cms/pages/menus/categories_restaurant/categories_restaurant.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
+import 'package:kapte_cms/widgets/custom_input.dart';
+import 'package:kapte_cms/widgets/detail_save_button.dart';
 
 class CategorieRestaurantDetail extends ConsumerStatefulWidget {
   const CategorieRestaurantDetail({Key? key}) : super(key: key);

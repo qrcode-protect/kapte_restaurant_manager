@@ -4,10 +4,10 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:libertyrestaurant/models/restaurant_media/restaurant_media.dart';
-import 'package:libertyrestaurant/models/utilisateur/utilisateur.dart';
-import 'package:libertyrestaurant/pages/documents/drawer_info.dart';
-import 'package:libertyrestaurant/services/data.dart';
+import 'package:kapte_cms/models/restaurant_media/restaurant_media.dart';
+import 'package:kapte_cms/models/utilisateur/utilisateur.dart';
+import 'package:kapte_cms/pages/documents/drawer_info.dart';
+import 'package:kapte_cms/services/data.dart';
 
 final mediaProvider = ChangeNotifierProvider.autoDispose<MediaState>((ref) {
   return MediaState();

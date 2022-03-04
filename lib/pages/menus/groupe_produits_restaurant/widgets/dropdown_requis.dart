@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:libertyrestaurant/pages/menus/groupe_produits_restaurant/groupe_produits_restaurant_detail.dart';
+import 'package:kapte_cms/pages/menus/groupe_produits_restaurant/groupe_produits_restaurant_detail.dart';
 
 class DropdownRequis extends StatelessWidget {
   const DropdownRequis({
