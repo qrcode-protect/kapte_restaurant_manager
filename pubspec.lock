@@ -283,13 +283,6 @@ packages:
       url: "https://github.com/qrcode-protect/firebase_login_package.git"
     source: git
     version: "1.0.1"
-  firebase_messaging_platform_interface:
-    dependency: "direct overridden"
-    description:
-      name: firebase_messaging_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.1.6"
   firebase_storage:
     dependency: "direct main"
     description:

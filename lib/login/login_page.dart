@@ -203,7 +203,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                '©liberty 2022',
+                '©kapte 2022',
                 style: Theme.of(context)
                     .textTheme
                     .headline6!
