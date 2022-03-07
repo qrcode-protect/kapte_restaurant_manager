@@ -10,7 +10,7 @@ Utilisateur _$UtilisateurFromJson(Map json) => Utilisateur(
       id: json['id'] as String,
       nom: json['nom'] as String,
       email: json['email'] as String,
-      phone: json['phone'] as String,
+      phone: json['phone'] as String?,
       token: json['token'] as String,
       avatar: json['avatar'] as String,
       idRestaurant: json['idRestaurant'] as String?,

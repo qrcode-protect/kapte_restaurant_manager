@@ -16,6 +16,7 @@ path_provider_ios=/home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.d
 path_provider_linux=/home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_linux-2.1.5/
 path_provider_macos=/home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-2.0.5/
 path_provider_windows=/home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/path_provider_windows-2.0.5/
+printing=/home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/printing-5.7.2/
 shared_preferences=/home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences-2.0.12/
 shared_preferences_android=/home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_android-2.0.10/
 shared_preferences_ios=/home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/shared_preferences_ios-2.0.9/

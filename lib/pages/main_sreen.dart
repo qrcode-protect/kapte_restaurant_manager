@@ -147,7 +147,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                                 else if (currentRoute.pathTemplate
                                     .startsWith('/commandes'))
                                   const FadeTransitionPage<void>(
-                                    child: CommmandesPage(),
+                                    child: CommandesPage(),
                                   )
                                 else if (currentRoute.pathTemplate
                                     .startsWith('/paiements'))

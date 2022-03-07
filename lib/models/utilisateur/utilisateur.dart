@@ -8,7 +8,7 @@ class Utilisateur {
     required this.id,
     required this.nom,
     required this.email,
-    required this.phone,
+    this.phone,
     required this.token,
     required this.avatar,
     this.idRestaurant,
@@ -16,7 +16,7 @@ class Utilisateur {
   final String id;
   final String nom;
   final String email;
-  final String phone;
+  final String? phone;
   final String token;
   final String avatar;
   String? idRestaurant;

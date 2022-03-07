@@ -9,6 +9,7 @@ import 'package:kapte_cms/routing/route_state.dart';
 import 'package:kapte_cms/pages/main_sreen.dart';
 import 'package:kapte_cms/theme.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'package:intl/date_symbol_data_local.dart' as intl;
 
 const firebaseKapteConfig = FirebaseOptions(
   apiKey: "AIzaSyCQeCHAVsvIIgEvUuBvm3FA5wk1AabaQV4",
@@ -24,6 +25,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: firebaseKapteConfig);
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
+  intl.initializeDateFormatting();
   setPathUrlStrategy();
   runApp(
     ProviderScope(
