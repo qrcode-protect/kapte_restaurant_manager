@@ -1,4 +1,4 @@
-package com.backoffice.libertyrestaurant
+package 
 
 import io.flutter.embedding.android.FlutterActivity
 

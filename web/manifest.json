@@ -1,6 +1,6 @@
 {
-    "name": "libertyrestaurant",
-    "short_name": "libertyrestaurant",
+    "name": "Kapte Administration",
+    "short_name": "Kapte Cms",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

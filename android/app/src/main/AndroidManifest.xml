@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.backoffice.libertyrestaurant">
+    package="">
    <application
-        android:label="libertyrestaurant"
+        android:label="kaptecms"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
