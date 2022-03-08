@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   adaptive_theme: ^2.3.0
+  badges: ^2.0.2
   cloud_firestore: ^3.1.7
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.3.6

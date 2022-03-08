@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kapte_cms/routing/route_state.dart';
@@ -11,6 +12,7 @@ class DrawerItem extends StatelessWidget {
     required this.drawerState,
     required this.drawerWidth,
     required this.value,
+    this.badgeContent,
   }) : super(key: key);
 
   final String title;
@@ -19,6 +21,7 @@ class DrawerItem extends StatelessWidget {
   final bool drawerState;
   final double drawerWidth;
   final String value;
+  final Widget? badgeContent;
 
   @override
   Widget build(BuildContext context) {
@@ -40,23 +43,45 @@ class DrawerItem extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 10.0),
-                    child: Icon(
-                      icon,
-                      color: currentRoute.pathTemplate == value
-                          ? Theme.of(context).secondaryHeaderColor
-                          : null,
-                    ),
+                    child: badgeContent != null && !drawerState
+                        ? Badge(
+                            badgeContent: badgeContent,
+                            child: Icon(
+                              icon,
+                              color: currentRoute.pathTemplate == value
+                                  ? Theme.of(context).secondaryHeaderColor
+                                  : null,
+                            ),
+                          )
+                        : Icon(
+                            icon,
+                            color: currentRoute.pathTemplate == value
+                                ? Theme.of(context).secondaryHeaderColor
+                                : null,
+                          ),
                   ),
                   if (drawerState)
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        title,
-                        style: TextStyle(
-                          color: currentRoute.pathTemplate == value
-                              ? Theme.of(context).secondaryHeaderColor
-                              : null,
-                        ),
+                      child: Row(
+                        children: [
+                          Text(
+                            title,
+                            style: TextStyle(
+                              color: currentRoute.pathTemplate == value
+                                  ? Theme.of(context).secondaryHeaderColor
+                                  : null,
+                            ),
+                          ),
+                          if (badgeContent != null)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: Badge(
+                                badgeContent: badgeContent!,
+                              ),
+                            )
+                        ],
                       ),
                     ),
                 ],

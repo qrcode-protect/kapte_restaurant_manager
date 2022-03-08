@@ -38,6 +38,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "badges",
+      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/badges-2.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "barcode",
       "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/barcode-2.2.0",
       "packageUri": "lib/",
@@ -788,7 +794,7 @@
       "languageVersion": "2.15"
     }
   ],
-  "generated": "2022-03-07T18:46:37.699825Z",
+  "generated": "2022-03-08T08:50:22.048293Z",
   "generator": "pub",
   "generatorVersion": "2.16.1"
 }

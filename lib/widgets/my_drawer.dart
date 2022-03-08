@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kapte_cms/routing/route_state.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
 import 'package:kapte_cms/widgets/drawer_item.dart';
 
 class MyDrawer extends StatefulWidget {
@@ -21,6 +23,8 @@ class _MyDrawerState extends State<MyDrawer> {
     final routeState = RouteStateScope.of(context);
     var drawerWidth = widget.drawerWidth;
     var drawerOpen = widget.drawerOpen;
+    int nombreCommandeEnCours = 0;
+
     return Consumer(builder: (context, ref, _) {
       return Card(
         child: Scaffold(
@@ -66,6 +70,34 @@ class _MyDrawerState extends State<MyDrawer> {
                 onTap: (value) {
                   routeState.go('/commandes');
                 },
+                badgeContent: Consumer(builder: (context, ref, _) {
+                  final appState = ref.watch(appStateProvider);
+                  return StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('commandes_restauration')
+                          .where(
+                            'restaurant.id',
+                            isEqualTo: appState.utilisateur!.idRestaurant,
+                          )
+                          .where('status.termine', isEqualTo: false)
+                          .orderBy('date', descending: true)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('');
+                        }
+                        if (snapshot.data != null) {
+                          if (nombreCommandeEnCours !=
+                              snapshot.data!.docs.length) {
+                            nombreCommandeEnCours = snapshot.data!.docs.length;
+                          }
+                        }
+                        return Text(
+                          nombreCommandeEnCours.toString(),
+                          style: const TextStyle(color: Colors.white),
+                        );
+                      });
+                }),
               ),
               DrawerItem(
                 drawerWidth: drawerWidth,
