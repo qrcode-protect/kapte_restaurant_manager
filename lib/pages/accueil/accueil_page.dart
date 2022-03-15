@@ -16,21 +16,35 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final utilisateur = ref.watch(appStateProvider).utilisateur;
-    return utilisateur == null
-        ? const SizedBox.shrink()
-        : utilisateur.idRestaurant == null
+    final administrateur = ref.watch(appStateProvider).administrateur;
+    print(administrateur);
+    return administrateur
+        ? Scaffold(
+            body: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ListView(
+                children: const [
+                  AccueilHeaderAdmin(),
+                  AccueilBodyAdmin(),
+                ],
+              ),
+            ),
+          )
+        : utilisateur == null
             ? const SizedBox.shrink()
-            : Scaffold(
-                body: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: ListView(
-                    children: [
-                      AccueilHeader(user: utilisateur),
-                      AccueilBody(user: utilisateur),
-                    ],
-                  ),
-                ),
-              );
+            : utilisateur.idRestaurant == null
+                ? const SizedBox.shrink()
+                : Scaffold(
+                    body: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: ListView(
+                        children: [
+                          AccueilHeader(user: utilisateur),
+                          AccueilBody(user: utilisateur),
+                        ],
+                      ),
+                    ),
+                  );
   }
 }
 
@@ -105,6 +119,28 @@ class AccueilHeader extends StatelessWidget {
   }
 }
 
+class AccueilHeaderAdmin extends StatelessWidget {
+  const AccueilHeaderAdmin({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Text(
+              'Bonjour, Administrateur',
+              style: Theme.of(context).textTheme.headline2!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
 class AccueilBody extends StatelessWidget {
   const AccueilBody({Key? key, this.user}) : super(key: key);
   final Utilisateur? user;
@@ -172,6 +208,15 @@ class AccueilBody extends StatelessWidget {
         ),
       ],
     );
+  }
+}
+
+class AccueilBodyAdmin extends StatelessWidget {
+  const AccueilBodyAdmin({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
 

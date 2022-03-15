@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:kapte_cms/login/login_page.dart';
+import 'package:kapte_cms/pages/login/login_page.dart';
 import 'package:kapte_cms/models/utilisateur/utilisateur.dart';
 import 'package:kapte_cms/pages/etablissement/ajouter_etablissement.dart';
 import 'package:kapte_cms/pages/pages.dart';
@@ -100,7 +100,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     )
                   : null,
               title: Text(
-                'Restaurant Manager',
+                'Partenaire Kapte ${appState.administrateur ? '(Administrateur)' : null}',
                 style: Theme.of(context).textTheme.headline4!.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -111,7 +111,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 ProfilePopupMenu(),
               ],
             ),
-            body: appState.utilisateur!.idRestaurant != null
+            body: appState.administrateur
                 ? SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: SizedBox(
@@ -145,24 +145,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                                     child: SettingPage(),
                                   )
                                 else if (currentRoute.pathTemplate
-                                    .startsWith('/commandes'))
-                                  const FadeTransitionPage<void>(
-                                    child: CommandesPage(),
-                                  )
-                                else if (currentRoute.pathTemplate
                                     .startsWith('/paiements'))
                                   const FadeTransitionPage<void>(
                                     child: PaiementsPage(),
-                                  )
-                                else if (currentRoute.pathTemplate
-                                    .startsWith('/menus'))
-                                  const FadeTransitionPage<void>(
-                                    child: MenusPage(),
-                                  )
-                                else if (currentRoute.pathTemplate
-                                    .startsWith('/etablissement'))
-                                  const FadeTransitionPage<void>(
-                                    child: EtablissementPage(),
                                   )
                                 else if (currentRoute.pathTemplate
                                     .startsWith('/compte'))
@@ -186,7 +171,118 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                       ),
                     ),
                   )
-                : const Center(child: AjouterEtablissement()),
+                : !appState.utilisateur!.validated
+                    ? Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Votre compte est bien créé.'),
+                            const Text(
+                                'Vous pourrez accèder à votre espace de gestion une fois validé par l\'administrateur'),
+                            TextButton(
+                              onPressed: () {
+                                appState.signOut();
+                              },
+                              child: const Text('J\'ai compris'),
+                            ),
+                          ],
+                        ),
+                      )
+                    : appState.utilisateur!.suspended
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text('Votre compte est suspendu.'),
+                                const Text(
+                                    'Vous ne pouvez pas acceder à votre espace de gestion.'),
+                                TextButton(
+                                  onPressed: () {
+                                    appState.signOut();
+                                  },
+                                  child: const Text('J\'ai compris'),
+                                ),
+                              ],
+                            ),
+                          )
+                        : appState.utilisateur!.idRestaurant != null
+                            ? SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: SizedBox(
+                                  width: MediaQuery.of(context).size.width < 800
+                                      ? 800
+                                      : MediaQuery.of(context).size.width,
+                                  child: Row(
+                                    children: [
+                                      SizedBox(
+                                        height: double.infinity,
+                                        width: drawerWidth,
+                                        child: MyDrawer(
+                                          drawerOpen: drawerOpen,
+                                          drawerWidth: drawerWidth,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Navigator(
+                                          key: FirstScreen.navigatorKey,
+                                          onPopPage: (route, dynamic result) =>
+                                              route.didPop(result),
+                                          pages: [
+                                            if (currentRoute.pathTemplate
+                                                .startsWith('/accueil'))
+                                              const FadeTransitionPage<void>(
+                                                child: HomePage(),
+                                              )
+                                            else if (currentRoute.pathTemplate
+                                                .startsWith('/settings'))
+                                              const FadeTransitionPage<void>(
+                                                child: SettingPage(),
+                                              )
+                                            else if (currentRoute.pathTemplate
+                                                .startsWith('/commandes'))
+                                              const FadeTransitionPage<void>(
+                                                child: CommandesPage(),
+                                              )
+                                            else if (currentRoute.pathTemplate
+                                                .startsWith('/paiements'))
+                                              const FadeTransitionPage<void>(
+                                                child: PaiementsPage(),
+                                              )
+                                            else if (currentRoute.pathTemplate
+                                                .startsWith('/menus'))
+                                              const FadeTransitionPage<void>(
+                                                child: MenusPage(),
+                                              )
+                                            else if (currentRoute.pathTemplate
+                                                .startsWith('/etablissement'))
+                                              const FadeTransitionPage<void>(
+                                                child: EtablissementPage(),
+                                              )
+                                            else if (currentRoute.pathTemplate
+                                                .startsWith('/compte'))
+                                              const FadeTransitionPage<void>(
+                                                child: ComptesPage(),
+                                              )
+                                            else if (currentRoute.pathTemplate
+                                                .startsWith('/documents'))
+                                              const FadeTransitionPage<void>(
+                                                child: DocumentsPage(),
+                                              )
+                                            else
+                                              FadeTransitionPage<void>(
+                                                key: const ValueKey('empty'),
+                                                child: Container(),
+                                              ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : const Center(
+                                child: AjouterEtablissement(),
+                              ),
           )
         : const Scaffold(
             body: LinearProgressIndicator(

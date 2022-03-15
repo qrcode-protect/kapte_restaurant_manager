@@ -12,6 +12,9 @@ class Utilisateur {
     required this.token,
     required this.avatar,
     this.idRestaurant,
+    required this.validated,
+    required this.suspended,
+    this.creationDate,
   });
   final String id;
   final String nom;
@@ -20,6 +23,9 @@ class Utilisateur {
   final String token;
   final String avatar;
   String? idRestaurant;
+  bool validated;
+  bool suspended;
+  DateTime? creationDate;
 
   factory Utilisateur.fromJson(Map<String, dynamic> json) =>
       _$UtilisateurFromJson(json);

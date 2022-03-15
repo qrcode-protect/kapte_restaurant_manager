@@ -14,6 +14,11 @@ Utilisateur _$UtilisateurFromJson(Map json) => Utilisateur(
       token: json['token'] as String,
       avatar: json['avatar'] as String,
       idRestaurant: json['idRestaurant'] as String?,
+      validated: json['validated'] as bool,
+      suspended: json['suspended'] as bool,
+      creationDate: json['creationDate'] == null
+          ? null
+          : DateTime.parse(json['creationDate'] as String),
     );
 
 Map<String, dynamic> _$UtilisateurToJson(Utilisateur instance) =>
@@ -25,4 +30,7 @@ Map<String, dynamic> _$UtilisateurToJson(Utilisateur instance) =>
       'token': instance.token,
       'avatar': instance.avatar,
       'idRestaurant': instance.idRestaurant,
+      'validated': instance.validated,
+      'suspended': instance.suspended,
+      'creationDate': instance.creationDate?.toIso8601String(),
     };

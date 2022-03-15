@@ -1,21 +1,25 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kapte_cms/state_management/state_management.dart';
 
-class LoginPage extends ConsumerStatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignInPage extends ConsumerStatefulWidget {
+  const SignInPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  ConsumerState<SignInPage> createState() => _SignInPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPage> {
+class _SignInPageState extends ConsumerState<SignInPage> {
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController emailContoller = TextEditingController();
+  TextEditingController passwordContoller = TextEditingController();
+  TextEditingController validationPasswordContoller = TextEditingController();
   bool singInState = false;
   bool notSeePassword = true;
   bool onErrorValue = false;
-  TextEditingController emailContoller = TextEditingController();
-  TextEditingController passwordContoller = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
+  String? errorMessage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +50,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             // ),
                             ListTile(
                               title: Text(
-                                'Connectez-vous',
+                                'Créez votre compte',
                                 style: Theme.of(context)
                                     .textTheme
                                     .headline3!
@@ -56,7 +60,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     ),
                               ),
                               subtitle: const Text(
-                                  'Utilisez votre nom d\'utilisateur et votre mot de passe pour vous connecter au Li-berty Restaurant Manager.'),
+                                  'Remplissez les informations necessaires pour vous inscrire.'),
                             ),
                             SizedBox(
                               width: double.infinity,
@@ -71,6 +75,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   if (value == null || value.isEmpty) {
                                     return 'Veuillez saisir une valeur';
                                   }
+
                                   return null;
                                 },
                               ),
@@ -79,7 +84,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               width: double.infinity,
                               height: 60,
                               child: TextFormField(
-                                controller: passwordContoller,
+                                controller: validationPasswordContoller,
                                 obscureText: notSeePassword,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
@@ -103,30 +108,50 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                   if (value == null || value.isEmpty) {
                                     return 'Veuillez saisir une valeur';
                                   }
+                                  if (value !=
+                                      validationPasswordContoller.text) {
+                                    return 'Les mots de passes doivent être identiques';
+                                  }
+
+                                  return null;
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 60,
+                              child: TextFormField(
+                                controller: passwordContoller,
+                                obscureText: notSeePassword,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: 'Validation du mot de passe',
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        notSeePassword = !notSeePassword;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      !notSeePassword
+                                          ? Icons.remove_red_eye_outlined
+                                          : Icons.visibility_off_outlined,
+                                    ),
+                                    splashRadius: 20,
+                                    padding: EdgeInsets.zero,
+                                  ),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Veuillez saisir une valeur';
+                                  }
+                                  if (value != passwordContoller.value.text) {
+                                    return 'Les mots de passes doivent être identiques';
+                                  }
                                   return null;
                                 },
                                 onFieldSubmitted: (value) {
-                                  if (_formKey.currentState!.validate()) {
-                                    setState(
-                                      () {
-                                        singInState = true;
-                                      },
-                                    );
-                                    ref
-                                        .read(appStateProvider)
-                                        .loginWithEmailAndPassword(
-                                          emailContoller.value.text,
-                                          passwordContoller.value.text,
-                                        )
-                                        .catchError((onError) {
-                                      setState(
-                                        () {
-                                          singInState = false;
-                                          onErrorValue = true;
-                                        },
-                                      );
-                                    });
-                                  }
+                                  handleSubmit();
                                 },
                               ),
                             ),
@@ -136,31 +161,11 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                               child: ElevatedButton(
                                 onPressed: !singInState
                                     ? () {
-                                        if (_formKey.currentState!.validate()) {
-                                          setState(
-                                            () {
-                                              singInState = true;
-                                            },
-                                          );
-                                          ref
-                                              .read(appStateProvider)
-                                              .loginWithEmailAndPassword(
-                                                emailContoller.value.text,
-                                                passwordContoller.value.text,
-                                              )
-                                              .catchError((onError) {
-                                            setState(
-                                              () {
-                                                singInState = false;
-                                                onErrorValue = true;
-                                              },
-                                            );
-                                          });
-                                        }
+                                        handleSubmit();
                                       }
                                     : () {},
                                 child: !singInState
-                                    ? const Text('Connexion')
+                                    ? const Text('Créer le compte')
                                     : const SizedBox(
                                         width: 25,
                                         height: 25,
@@ -172,16 +177,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                             ),
                             Visibility(
                               visible: onErrorValue,
-                              child: const Text(
-                                'Votre email ou mot de passe est incorrect',
-                                style: TextStyle(
+                              child: Text(
+                                errorMessage != null
+                                    ? errorMessage!
+                                    : 'Votre email ou mot de passe est incorrect',
+                                style: const TextStyle(
                                   color: Colors.red,
                                 ),
                               ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              child: const Text('Créer un compte'),
                             ),
                           ],
                         ),
@@ -214,5 +217,45 @@ class _LoginPageState extends ConsumerState<LoginPage> {
         ),
       ),
     );
+  }
+
+  handleSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      setState(
+        () {
+          singInState = true;
+          errorMessage = null;
+        },
+      );
+      await createAccountFirebase();
+      if (FirebaseAuth.instance.currentUser != null) {
+        Navigator.of(context).pop();
+      }
+    }
+  }
+
+  createAccountFirebase() async {
+    await ref
+        .read(appStateProvider)
+        .createUserWithEmailAndPassword(
+          emailContoller.value.text,
+          passwordContoller.value.text,
+        )
+        .catchError((e) {
+      setState(
+        () {
+          switch (e.code) {
+            case 'email-already-in-use':
+              errorMessage = 'Un compte avec cet email existe déjà.';
+              break;
+            case 'weak-password':
+              errorMessage = 'Mot de passe trop faible.';
+              break;
+          }
+          singInState = false;
+          onErrorValue = true;
+        },
+      );
+    });
   }
 }

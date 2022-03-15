@@ -255,9 +255,9 @@
     },
     {
       "name": "firebase_login_package",
-      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/git/firebase_login_package-84b0a4a95fad7ffaf5ef776334ac3c9611e9d31c/",
+      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/git/firebase_login_package-1336defd5835396db00397059130c92932fad545/",
       "packageUri": "lib/",
-      "languageVersion": "2.14"
+      "languageVersion": "2.12"
     },
     {
       "name": "firebase_storage",
@@ -340,6 +340,24 @@
     {
       "name": "google_fonts",
       "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/google_fonts-2.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "google_sign_in",
+      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in-5.2.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
+      "name": "google_sign_in_platform_interface",
+      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_platform_interface-2.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "google_sign_in_web",
+      "rootUri": "file:///home/saka/snap/flutter/common/flutter/.pub-cache/hosted/pub.dartlang.org/google_sign_in_web-0.10.0+5",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -794,7 +812,7 @@
       "languageVersion": "2.15"
     }
   ],
-  "generated": "2022-03-08T08:50:22.048293Z",
+  "generated": "2022-03-15T11:51:51.982669Z",
   "generator": "pub",
   "generatorVersion": "2.16.1"
 }
