@@ -16,7 +16,7 @@ class ComptesPage extends ConsumerStatefulWidget {
 }
 
 class _ComptesPageState extends ConsumerState<ComptesPage> {
-  int pageIndex = 0;
+  int pageIndex = 2;
 
   @override
   Widget build(BuildContext context) {
@@ -328,21 +328,24 @@ class ComptesAdmin extends StatelessWidget {
                               trailing: user.id ==
                                       FirebaseAuth.instance.currentUser!.uid
                                   ? null
-                                  : ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                Colors.red),
+                                  : SizedBox(
+                                height: 46,
+                                    child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.red),
+                                        ),
+                                        onPressed: () async {
+                                          await FirebaseFirestore.instance
+                                              .collection(
+                                                  'prestataires_restaurant')
+                                              .doc(user.id)
+                                              .delete();
+                                        },
+                                        child: const Text('Supprimer le compte'),
                                       ),
-                                      onPressed: () async {
-                                        await FirebaseFirestore.instance
-                                            .collection(
-                                                'prestataires_restaurant')
-                                            .doc(user.id)
-                                            .delete();
-                                      },
-                                      child: const Text('Supprimer le compte'),
-                                    ),
+                                  ),
                             ))
                         .toList(),
                     Padding(
@@ -351,13 +354,17 @@ class ComptesAdmin extends StatelessWidget {
                         vertical: 10.0,
                       ),
                       child: Consumer(builder: (context, ref, _) {
-                        return ElevatedButton(
-                          onPressed: () {
-                            ref
-                                .read(compteAdminStateProvider)
-                                .setShowCreate(true);
-                          },
-                          child: const Text('Ajouter un administrateur'),
+                        return SizedBox(
+                          height: 46,
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              ref
+                                  .read(compteAdminStateProvider)
+                                  .setShowCreate(true);
+                            },
+                            child: const Text('Ajouter un administrateur'),
+                          ),
                         );
                       }),
                     ),

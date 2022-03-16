@@ -1,10 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_login_package/firebase_login_package.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:kapte_cms/main.dart';
 import 'package:kapte_cms/models/utilisateur/utilisateur.dart';
 import 'package:kapte_cms/services/data.dart';
+import 'package:flutter_cache/flutter_cache.dart' as cache;
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -12,11 +11,15 @@ class AppStateProvider with ChangeNotifier {
   AppStateProvider() {
     getUser();
   }
+
   AuthenticationRepository auth = AuthenticationRepository(_auth);
   User? user;
+  AuthCredential? userCredential;
   bool awaitUser = true;
   Utilisateur? utilisateur;
   bool administrateur = false;
+  String? emailValue;
+  String? passwordValue;
 
   getUser() async {
     user = auth.firebaseAuth.currentUser;
@@ -41,11 +44,16 @@ class AppStateProvider with ChangeNotifier {
   }
 
   Future<void> loginWithEmailAndPassword(String email, String password) async {
-    await auth.loginWithEmailAndPassword(email, password).then((value) async {
+    emailValue = email;
+    passwordValue = password;
+    userCredential = await auth
+        .loginWithEmailAndPassword(email, password)
+        .then((value) async {
       getUser();
       getUtilisateur();
-      print(administrateur);
     });
+    cache.write('email', emailValue);
+    cache.write('password', passwordValue);
   }
 
   Future<void> createUserWithEmailAndPassword(
@@ -62,38 +70,30 @@ class AppStateProvider with ChangeNotifier {
     }
   }
 
-  Future<void> createAdmin(String email, String password) async {
-    if (Firebase.apps.where((element) => element.name == 'second').isEmpty) {
-      FirebaseApp _secondApp = await Firebase.initializeApp(
-          name: 'second', options: firebaseKapteConfig);
-    }
-
-    print(Firebase.apps);
-    final _secondaryAuth = FirebaseAuth.instanceFor(
-      app: Firebase.app('second'),
-    );
-    print(_secondaryAuth);
-    // await _secondaryAuth.setPersistence(Persistence.NONE);
-    AuthenticationRepository _secondaryAuthRepo =
-        AuthenticationRepository(_secondaryAuth);
-    print(_secondaryAuthRepo);
+  Future<void> createdAdmin({
+    required String email,
+    required String password,
+  }) async {
+    String emailValue = await cache.load('email');
+    String passwordValue = await cache.load('password');
     try {
-      await _secondaryAuthRepo
-          .createUserWithEmailAndPassword(email, password)
-          .then((value) async {
-        await Data()
-            .createAdmin(_secondaryAuthRepo.firebaseAuth.currentUser!)
-            .then((value) => _secondaryAuth.signOut());
-      });
-    } catch (e) {
-      print(e);
-      rethrow;
+      await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      await _auth.signInWithEmailAndPassword(
+        email: emailValue,
+        password: passwordValue,
+      );
+    } on FirebaseAuthException catch (e) {
+      debugPrint(e.code);
     }
   }
 
   signOut() async {
     await auth.logOut().then((value) {
       getUser();
+      cache.clear();
       utilisateur = null;
     });
     notifyListeners();
