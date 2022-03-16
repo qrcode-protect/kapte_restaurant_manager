@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_login_package/firebase_login_package.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,6 +63,8 @@ class AppStateProvider with ChangeNotifier {
       await auth
           .createUserWithEmailAndPassword(email, password)
           .then((value) async {
+        await cache.write('email', email);
+        await cache.write('password', password);
         getUser();
         getUtilisateur();
       });
@@ -70,23 +73,56 @@ class AppStateProvider with ChangeNotifier {
     }
   }
 
-  Future<void> createdAdmin({
+  Future<void> createAdmin({
     required String email,
     required String password,
   }) async {
     String emailValue = await cache.load('email');
     String passwordValue = await cache.load('password');
     try {
-      await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
+      await auth.createUserWithEmailAndPassword(
+        email,
+        password,
       );
-      await _auth.signInWithEmailAndPassword(
-        email: emailValue,
-        password: passwordValue,
+      await Data().createAdmin(_auth.currentUser!, password);
+      await auth.loginWithEmailAndPassword(
+        emailValue,
+        passwordValue,
       );
     } on FirebaseAuthException catch (e) {
       debugPrint(e.code);
+      rethrow;
+    }
+  }
+
+  Future<void> deleteAccount(String idAccount, bool admin) async {
+    Map<String, dynamic> userData = await FirebaseFirestore.instance
+        .collection(admin ? 'administrateur' : 'prestataires_restaurant')
+        .doc(idAccount)
+        .get()
+        .then((value) => value.data()!);
+    String emailValue = await cache.load('email');
+    String passwordValue = await cache.load('password');
+    try {
+      await auth
+          .loginWithEmailAndPassword(userData['email'], userData['password'])
+          .then(
+            (value) async => await auth.user!
+                .delete()
+                .then(
+                  (value) async => await auth.loginWithEmailAndPassword(
+                      emailValue, passwordValue),
+                )
+                .then(
+                  (value) async => await FirebaseFirestore.instance
+                      .collection(
+                          admin ? 'administrateur' : 'prestataires_restaurant')
+                      .doc(idAccount)
+                      .delete(),
+                ),
+          );
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 

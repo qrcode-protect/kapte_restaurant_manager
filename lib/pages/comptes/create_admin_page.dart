@@ -15,6 +15,8 @@ class _CreateAdminPageState extends ConsumerState<CreateAdminPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailContoller = TextEditingController();
   TextEditingController passwordContoller = TextEditingController();
+  TextEditingController validatePasswordContoller = TextEditingController();
+
   bool singInState = false;
   bool notSeePassword = true;
   bool onErrorValue = false;
@@ -79,9 +81,59 @@ class _CreateAdminPageState extends ConsumerState<CreateAdminPage> {
                             child: TextFormField(
                               controller: passwordContoller,
                               obscureText: notSeePassword,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: 'Mot de passe',
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      notSeePassword = !notSeePassword;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    !notSeePassword
+                                        ? Icons.remove_red_eye_outlined
+                                        : Icons.visibility_off_outlined,
+                                  ),
+                                  splashRadius: 20,
+                                  padding: EdgeInsets.zero,
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Veuillez saisir une valeur';
+                                }
+                                if (value != validatePasswordContoller.text) {
+                                  return 'Les mots de passes doivent être identiques';
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 60,
+                            child: TextFormField(
+                              controller: validatePasswordContoller,
+                              obscureText: notSeePassword,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Valider le mot de passe',
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      notSeePassword = !notSeePassword;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    !notSeePassword
+                                        ? Icons.remove_red_eye_outlined
+                                        : Icons.visibility_off_outlined,
+                                  ),
+                                  splashRadius: 20,
+                                  padding: EdgeInsets.zero,
+                                ),
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -157,19 +209,44 @@ class _CreateAdminPageState extends ConsumerState<CreateAdminPage> {
         () {
           singInState = true;
           errorMessage = null;
+          onErrorValue = false;
         },
       );
-      await createdAmdinAccount();
+      await createdAdminAccount();
       setState(() {
         singInState = false;
       });
+      if (!onErrorValue) {
+        ref.read(compteAdminStateProvider).setShowCreate(false);
+      }
     }
   }
 
-  createdAmdinAccount() async {
-    ref.read(appStateProvider).createdAdmin(
+  createdAdminAccount() async {
+    await ref
+        .read(appStateProvider)
+        .createAdmin(
           email: emailContoller.value.text,
           password: passwordContoller.value.text,
-        );
+        )
+        .catchError((e) {
+      setState(
+        () {
+          switch (e.code) {
+            case 'email-already-in-use':
+              errorMessage = 'Un compte avec cet email existe déjà.';
+              break;
+            case 'weak-password':
+              errorMessage = 'Mot de passe trop faible.';
+              break;
+            case 'invalid-email':
+              errorMessage = 'Mail non valide';
+              break;
+          }
+          singInState = false;
+          onErrorValue = true;
+        },
+      );
+    });
   }
 }

@@ -61,7 +61,8 @@ class _MyAppState extends State<MyApp> {
         '/settings',
         '/paiements',
         '/comptes',
-        '/documents'
+        '/documents',
+        '/categories',
       ],
       initialRoute: '/accueil',
     );

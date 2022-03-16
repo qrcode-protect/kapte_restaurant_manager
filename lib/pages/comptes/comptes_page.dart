@@ -16,7 +16,7 @@ class ComptesPage extends ConsumerStatefulWidget {
 }
 
 class _ComptesPageState extends ConsumerState<ComptesPage> {
-  int pageIndex = 2;
+  int pageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -164,68 +164,71 @@ class ComptesPrestatairesValides extends StatelessWidget {
             List<Utilisateur> listUsers = snapshot.data!.docs
                 .map((e) => Utilisateur.fromJson(e.data()))
                 .toList();
-            return ListView(
-              children: [
-                ...listUsers
-                    .map((user) => ListTile(
-                          title: user.idRestaurant != null
-                              ? FutureBuilder<
-                                      DocumentSnapshot<Map<String, dynamic>>>(
-                                  future: FirebaseFirestore.instance
-                                      .collection('list_restaurant')
-                                      .doc(user.idRestaurant)
-                                      .get(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.done) {
-                                      if (snapshot.hasData &&
-                                          snapshot.data != null) {
-                                        Restaurant restaurant =
-                                            Restaurant.fromJson(
-                                                snapshot.data!.data()!);
-                                        return Text(
-                                            '${user.email} | ${restaurant.nom}');
-                                      } else {
-                                        return Text(user.email);
-                                      }
-                                    }
-                                    return Text(user.email);
-                                  })
-                              : Text(user.email),
-                          subtitle: user.creationDate != null
-                              ? Text(
-                                  'Inscription le : ${FormatDate().format(user.creationDate!)} à ${FormatDate().formatMinute(user.creationDate!)}')
-                              : null,
-                          trailing: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                user.suspended ? Colors.green : Colors.amber,
-                              ),
-                            ),
-                            onPressed: user.suspended
-                                ? () async {
-                                    await FirebaseFirestore.instance
-                                        .collection('prestataires_restaurant')
-                                        .doc(user.id)
-                                        .update({'suspended': false});
-                                  }
-                                : () async {
-                                    await FirebaseFirestore.instance
-                                        .collection('prestataires_restaurant')
-                                        .doc(user.id)
-                                        .update({'suspended': true});
-                                    await FirebaseFirestore.instance
-                                        .collection('list_restaurant')
-                                        .doc(user.idRestaurant)
-                                        .update({'enLigne': false});
-                                  },
-                            child: Text(user.suspended
-                                ? 'Retablir le compte'
-                                : 'Suspendre le compte'),
-                          ),
-                        ))
-                    .toList()
-              ],
+            return ListView.separated(
+              itemCount: listUsers.length,
+              separatorBuilder: (context, index) {
+                return const Divider();
+              },
+              itemBuilder: (context, index) => ListTile(
+                title: listUsers[index].idRestaurant != null
+                    ? FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                        future: FirebaseFirestore.instance
+                            .collection('list_restaurant')
+                            .doc(listUsers[index].idRestaurant)
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            if (snapshot.hasData && snapshot.data != null) {
+                              Restaurant restaurant =
+                                  Restaurant.fromJson(snapshot.data!.data()!);
+                              return Text(
+                                  '${listUsers[index].email} | ${restaurant.nom}');
+                            } else {
+                              return Text(listUsers[index].email);
+                            }
+                          }
+                          return Text(listUsers[index].email);
+                        })
+                    : Text(listUsers[index].email),
+                subtitle: listUsers[index].creationDate != null
+                    ? Text(
+                        'Inscription le : ${FormatDate().format(listUsers[index].creationDate!)} à ${FormatDate().formatMinute(listUsers[index].creationDate!)}')
+                    : null,
+                trailing: SizedBox(
+                  height: 46,
+                  width: 250,
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(
+                        listUsers[index].suspended
+                            ? Colors.green
+                            : Colors.amber,
+                      ),
+                    ),
+                    onPressed: listUsers[index].suspended
+                        ? () async {
+                            await FirebaseFirestore.instance
+                                .collection('prestataires_restaurant')
+                                .doc(listUsers[index].id)
+                                .update({'suspended': false});
+                          }
+                        : () async {
+                            await FirebaseFirestore.instance
+                                .collection('prestataires_restaurant')
+                                .doc(listUsers[index].id)
+                                .update({'suspended': true});
+                            await FirebaseFirestore.instance
+                                .collection('list_restaurant')
+                                .doc(listUsers[index].idRestaurant)
+                                .update({'enLigne': false});
+                          },
+                    child: Text(listUsers[index].suspended
+                        ? 'Retablir le compte'
+                        : 'Suspendre le compte'),
+                  ),
+                ),
+              ),
             );
           }
         }
@@ -256,20 +259,27 @@ class ComptesPrestatairesEnAttente extends StatelessWidget {
             return ListView(
               children: [
                 ...listUsers
-                    .map((user) => ListTile(
-                          title: Text(user.email),
-                          subtitle: user.creationDate != null
-                              ? Text(
-                                  'Inscription le : ${FormatDate().format(user.creationDate!)} à ${FormatDate().formatMinute(user.creationDate!)}')
-                              : null,
-                          trailing: ElevatedButton(
-                            onPressed: () async {
-                              await FirebaseFirestore.instance
-                                  .collection('prestataires_restaurant')
-                                  .doc(user.id)
-                                  .update({'validated': true});
-                            },
-                            child: const Text('Valider le compte'),
+                    .map((user) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ListTile(
+                            title: Text(user.email),
+                            subtitle: user.creationDate != null
+                                ? Text(
+                                    'Inscription le : ${FormatDate().format(user.creationDate!)} à ${FormatDate().formatMinute(user.creationDate!)}')
+                                : null,
+                            trailing: SizedBox(
+                              height: 46,
+                              width: 250,
+                              child: ElevatedButton(
+                                onPressed: () async {
+                                  await FirebaseFirestore.instance
+                                      .collection('prestataires_restaurant')
+                                      .doc(user.id)
+                                      .update({'validated': true});
+                                },
+                                child: const Text('Valider le compte'),
+                              ),
+                            ),
                           ),
                         ))
                     .toList()
@@ -319,33 +329,24 @@ class ComptesAdmin extends StatelessWidget {
                 return ListView(
                   children: [
                     ...listUsers
-                        .map((user) => ListTile(
-                              title: Text(user.email),
-                              subtitle: user.creationDate != null
-                                  ? Text(
-                                      'Creation le : ${FormatDate().format(user.creationDate!)} à ${FormatDate().formatMinute(user.creationDate!)}')
-                                  : null,
-                              trailing: user.id ==
-                                      FirebaseAuth.instance.currentUser!.uid
-                                  ? null
-                                  : SizedBox(
-                                height: 46,
-                                    child: ElevatedButton(
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Colors.red),
-                                        ),
-                                        onPressed: () async {
-                                          await FirebaseFirestore.instance
-                                              .collection(
-                                                  'prestataires_restaurant')
-                                              .doc(user.id)
-                                              .delete();
-                                        },
-                                        child: const Text('Supprimer le compte'),
-                                      ),
-                                  ),
+                        .map((user) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                title: Text(user.email),
+                                subtitle: user.creationDate != null
+                                    ? Text(
+                                        'Creation le : ${FormatDate().format(user.creationDate!)} à ${FormatDate().formatMinute(user.creationDate!)}')
+                                    : null,
+                                trailing: Consumer(builder: (context, ref, _) {
+                                  final connectedUser =
+                                      ref.watch(appStateProvider).utilisateur;
+                                  return user.id == connectedUser!.id
+                                      ? const SizedBox.shrink()
+                                      : DeleteButton(
+                                          userId: user.id,
+                                        );
+                                }),
+                              ),
                             ))
                         .toList(),
                     Padding(
@@ -382,6 +383,48 @@ class ComptesAdmin extends StatelessWidget {
           return showCreate ? const CreateAdminPage() : const SizedBox.shrink();
         }),
       ],
+    );
+  }
+}
+
+class DeleteButton extends StatefulWidget {
+  const DeleteButton({
+    Key? key,
+    required this.userId,
+  }) : super(key: key);
+  final String userId;
+
+  @override
+  State<DeleteButton> createState() => _DeleteButtonState();
+}
+
+class _DeleteButtonState extends State<DeleteButton> {
+  bool loading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 46,
+      width: 250,
+      child: Consumer(builder: (context, ref, _) {
+        return ElevatedButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.red),
+          ),
+          onPressed: () async {
+            setState(() {
+              loading = true;
+            });
+            await ref.read(appStateProvider).deleteAccount(widget.userId, true);
+            setState(() {
+              loading = false;
+            });
+          },
+          child: loading
+              ? const CircularProgressIndicator()
+              : const Text('Supprimer le compte'),
+        );
+      }),
     );
   }
 }

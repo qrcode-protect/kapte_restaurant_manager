@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kapte_cms/pages/categories/categories_page.dart';
 import 'package:kapte_cms/pages/login/login_page.dart';
 import 'package:kapte_cms/models/utilisateur/utilisateur.dart';
 import 'package:kapte_cms/pages/etablissement/ajouter_etablissement.dart';
@@ -158,6 +159,11 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                                     .startsWith('/documents'))
                                   const FadeTransitionPage<void>(
                                     child: DocumentsPage(),
+                                  )
+                                else if (currentRoute.pathTemplate
+                                    .startsWith('/categories'))
+                                  const FadeTransitionPage<void>(
+                                    child: CategoriePage(),
                                   )
                                 else
                                   FadeTransitionPage<void>(
