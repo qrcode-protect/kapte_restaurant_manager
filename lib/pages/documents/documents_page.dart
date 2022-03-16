@@ -8,6 +8,7 @@ import 'package:kapte_cms/models/restaurant_media/restaurant_media.dart';
 import 'package:kapte_cms/models/utilisateur/utilisateur.dart';
 import 'package:kapte_cms/pages/documents/drawer_info.dart';
 import 'package:kapte_cms/services/data.dart';
+import 'package:kapte_cms/state_management/state_management.dart';
 
 final mediaProvider = ChangeNotifierProvider.autoDispose<MediaState>((ref) {
   return MediaState();
@@ -27,8 +28,11 @@ class MediaState with ChangeNotifier {
   List listSelectedMedia = <RestaurantMedia>[];
 
   initRestaurantMediaPath() async {
-    utilisateur = await Data().getUtilisateur();
-    if (utilisateur!.idRestaurant != null) {
+    Data data = Data();
+    utilisateur = await data.getUtilisateur();
+    if (data.administrateur) {
+      path = '/';
+    } else if (utilisateur!.idRestaurant != null) {
       path = 'restaurants/${utilisateur!.idRestaurant!}/';
     }
     notifyListeners();
@@ -162,8 +166,9 @@ class _DocumentsPageState extends State<DocumentsPage> {
   Widget build(BuildContext context) {
     return Consumer(builder: (context, ref, _) {
       final mediaState = ref.watch(mediaProvider);
+      final administrateur = ref.watch(appStateProvider).administrateur;
       return mediaState.utilisateur != null
-          ? mediaState.utilisateur!.idRestaurant != null
+          ? ((mediaState.utilisateur!.idRestaurant != null) || (administrateur))
               ? Scaffold(
                   appBar: AppBar(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,

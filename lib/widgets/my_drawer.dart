@@ -166,6 +166,26 @@ class _MyDrawerState extends State<MyDrawer> {
                           routeState.go('/comptes');
                         },
                       ),
+                      DrawerItem(
+                        drawerWidth: drawerWidth,
+                        icon: Icons.people_outline,
+                        title: 'Catégories',
+                        value: '/categories',
+                        drawerState: drawerOpen,
+                        onTap: (value) {
+                          routeState.go('/categories');
+                        },
+                      ),
+                      DrawerItem(
+                        drawerWidth: drawerWidth,
+                        icon: Icons.folder_outlined,
+                        title: 'Documents',
+                        value: '/documents',
+                        drawerState: drawerOpen,
+                        onTap: (value) {
+                          routeState.go('/documents');
+                        },
+                      ),
                     ],
             );
           }),
