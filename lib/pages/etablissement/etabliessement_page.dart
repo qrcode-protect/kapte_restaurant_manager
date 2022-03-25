@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:kapte_cms/models/categorie/categorie.dart';
 import 'package:kapte_cms/models/restaurant/restaurant.dart';
 import 'package:kapte_cms/pages/documents/documents_page.dart';
 import 'package:kapte_cms/state_management/state_management.dart';
@@ -14,9 +15,15 @@ class EtablissementState with ChangeNotifier {
   Restaurant? restaurant;
   bool drawerValue = false;
   String? restaurantAvatar;
+  Categorie? selectedCategorie;
 
   setRestaurantAvatar(String path) {
     restaurantAvatar = path;
+    notifyListeners();
+  }
+
+  setSelectedCategorie(Categorie? categorie) {
+    selectedCategorie = categorie;
     notifyListeners();
   }
 
@@ -24,6 +31,7 @@ class EtablissementState with ChangeNotifier {
     this.restaurant = restaurant;
     if (restaurant != null) {
       restaurantAvatar = restaurant.avatar;
+      selectedCategorie = restaurant.categorie;
       drawerValue = true;
     } else {
       drawerValue = false;
@@ -380,6 +388,79 @@ class _EtablissementPageState extends ConsumerState<EtablissementPage> {
                                                 ),
                                               ),
                                       ),
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Text(
+                                            'Selectionner la categorie:'),
+                                        StreamBuilder<
+                                                QuerySnapshot<
+                                                    Map<String, dynamic>>>(
+                                            stream: FirebaseFirestore.instance
+                                                .collection(
+                                                    'list_restaurants_categorie')
+                                                .snapshots(),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState ==
+                                                  ConnectionState.active) {
+                                                if (snapshot.hasData) {
+                                                  List<
+                                                          DropdownMenuItem<
+                                                              Categorie>>
+                                                      listItems = snapshot
+                                                          .data!.docs
+                                                          .map((e) {
+                                                    Categorie categorie =
+                                                        Categorie.fromJson(
+                                                            e.data());
+                                                    return DropdownMenuItem<
+                                                        Categorie>(
+                                                      child: Text(
+                                                          categorie.nom != null
+                                                              ? categorie.nom!
+                                                              : categorie.id!),
+                                                      value: categorie,
+                                                    );
+                                                  }).toList();
+                                                  return DropdownButton<
+                                                      Categorie>(
+                                                    items: listItems,
+                                                    selectedItemBuilder:
+                                                        (context) {
+                                                      return listItems;
+                                                    },
+                                                    // value: etablissementState
+                                                    //     .selectedCategorie,
+                                                    onChanged:
+                                                        (Categorie? value) {
+                                                      etablissementState
+                                                          .setSelectedCategorie(
+                                                              value);
+                                                      if (value != null) {
+                                                        FirebaseFirestore
+                                                            .instance
+                                                            .collection(
+                                                                'list_restaurant')
+                                                            .doc(
+                                                                etablissementState
+                                                                    .restaurant!
+                                                                    .id)
+                                                            .update({
+                                                          'categorie':
+                                                              value.toJson()
+                                                        });
+                                                      }
+                                                    },
+                                                  );
+                                                }
+                                              }
+                                              return const Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              );
+                                            }),
+                                      ],
                                     )
                                   ],
                                 ),

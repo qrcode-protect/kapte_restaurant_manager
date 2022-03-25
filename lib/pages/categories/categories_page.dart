@@ -333,35 +333,61 @@ class EditCategorie extends ConsumerWidget {
                                           },
                                         ),
                                       );
+                                  ref
+                                      .read(categorieStateProvider)
+                                      .setSelectedCategorie(null);
                                 }
                               : null,
                           child: const Text('Mettre à jour'),
                         ),
                       ),
                     ),
-                    categorieState.listRestaurant!.isEmpty
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 10),
-                            child: SizedBox(
-                              height: 50,
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all(Colors.red),
-                                ),
-                                onPressed: () async {
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      child: SizedBox(
+                        height: 50,
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red),
+                          ),
+                          onPressed: categorieState.listRestaurant!.isEmpty
+                              ? () async {
                                   await FirebaseFirestore.instance
                                       .collection('list_restaurants_categorie')
                                       .doc(categorieState.selectedCategorie!.id)
                                       .delete();
+                                  ref
+                                      .read(categorieStateProvider)
+                                      .setSelectedCategorie(null);
+                                }
+                              : () async {
+                                  WriteBatch batch =
+                                      FirebaseFirestore.instance.batch();
+                                  for (var restaurant
+                                      in categorieState.listRestaurant!) {
+                                    batch.update(
+                                      FirebaseFirestore.instance
+                                          .collection('list_restaurant')
+                                          .doc(restaurant.id),
+                                      {'categorie': null},
+                                    );
+                                  }
+                                  batch.delete(FirebaseFirestore.instance
+                                      .collection('list_restaurants_categorie')
+                                      .doc(categorieState
+                                          .selectedCategorie!.id));
+                                  await batch.commit();
+                                  ref
+                                      .read(categorieStateProvider)
+                                      .setSelectedCategorie(null);
                                 },
-                                child: const Text('Supprimer'),
-                              ),
-                            ),
-                          )
-                        : const SizedBox.shrink(),
+                          child: const Text('Supprimer'),
+                        ),
+                      ),
+                    )
                   ],
                 ),
                 Positioned(
