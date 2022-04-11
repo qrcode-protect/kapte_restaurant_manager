@@ -57,7 +57,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                                     ),
                               ),
                               subtitle: const Text(
-                                  'Utilisez votre nom d\'utilisateur et votre mot de passe pour vous connecter au Li-berty Restaurant Manager.'),
+                                  'Utilisez votre nom d\'utilisateur et votre mot de passe pour vous connecter au Kapte Restaurant Manager.'),
                             ),
                             SizedBox(
                               width: double.infinity,

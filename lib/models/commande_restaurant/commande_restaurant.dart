@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:kapte_cms/models/client/client.dart';
 import 'package:kapte_cms/models/commande_restaurant_panier/commande_restaurant_panier.dart';
 import 'package:kapte_cms/models/commande_status_restaurant.dart/commande_status_restaurant.dart';
 import 'package:kapte_cms/models/restaurant/restaurant.dart';
@@ -19,7 +20,7 @@ class CommandeRestaurant {
   });
   final String id;
   final Restaurant restaurant;
-  final Utilisateur client;
+  final Client client;
   final DateTime date;
   final CommandeStatusRestaurant status;
   final List<CommandeRestaurantPanier> restaurantCommande;

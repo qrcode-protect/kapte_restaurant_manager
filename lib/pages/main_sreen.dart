@@ -101,7 +101,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     )
                   : null,
               title: Text(
-                'Partenaire Kapte ${appState.administrateur ? '(Administrateur)' : null}',
+                'Partenaire Kapte ${appState.administrateur ? '(Administrateur)' : ''}',
                 style: Theme.of(context).textTheme.headline4!.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,

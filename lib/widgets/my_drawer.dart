@@ -106,16 +106,6 @@ class _MyDrawerState extends State<MyDrawer> {
                       ),
                       DrawerItem(
                         drawerWidth: drawerWidth,
-                        icon: Icons.payment_outlined,
-                        title: 'Paiements',
-                        value: '/paiements',
-                        drawerState: drawerOpen,
-                        onTap: (value) {
-                          routeState.go('/paiements');
-                        },
-                      ),
-                      DrawerItem(
-                        drawerWidth: drawerWidth,
                         icon: Icons.folder_outlined,
                         title: 'Documents',
                         value: '/documents',
@@ -132,16 +122,6 @@ class _MyDrawerState extends State<MyDrawer> {
                         drawerState: drawerOpen,
                         onTap: (value) {
                           routeState.go('/comptes');
-                        },
-                      ),
-                      DrawerItem(
-                        drawerWidth: drawerWidth,
-                        icon: Icons.settings_outlined,
-                        title: 'Paramètres',
-                        value: '/settings',
-                        drawerState: drawerOpen,
-                        onTap: (value) {
-                          routeState.go('/settings');
                         },
                       ),
                     ]

@@ -10,8 +10,7 @@ CommandeRestaurant _$CommandeRestaurantFromJson(Map json) => CommandeRestaurant(
       id: json['id'] as String,
       restaurant: Restaurant.fromJson(
           Map<String, dynamic>.from(json['restaurant'] as Map)),
-      client: Utilisateur.fromJson(
-          Map<String, dynamic>.from(json['client'] as Map)),
+      client: Client.fromJson(Map<String, dynamic>.from(json['client'] as Map)),
       date: DateTime.parse(json['date'] as String),
       status: CommandeStatusRestaurant.fromJson(
           Map<String, dynamic>.from(json['status'] as Map)),

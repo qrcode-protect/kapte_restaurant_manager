@@ -27,7 +27,6 @@ class CommandeEnCours extends ConsumerWidget {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            print(snapshot.error.toString());
             return const Text('Erreur');
           }
 
