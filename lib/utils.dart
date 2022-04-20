@@ -1,0 +1,1 @@
+enum PaiementType { carte, espece }

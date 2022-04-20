@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:kapte_cms/models/adresse/adresse.dart';
 import 'package:kapte_cms/models/categorie/categorie.dart';
+import 'package:kapte_cms/models/paiements/paiements.dart';
 
 part 'restaurant.g.dart';
 
@@ -14,6 +15,7 @@ class Restaurant {
     this.categorie,
     this.adresse,
     this.enLigne,
+    this.paiements,
   });
   String? id;
   String? nom;
@@ -22,6 +24,7 @@ class Restaurant {
   String? description;
   Adresse? adresse;
   bool? enLigne;
+  Paiements? paiements;
 
   factory Restaurant.fromJson(Map<String, dynamic> json) =>
       _$RestaurantFromJson(json);

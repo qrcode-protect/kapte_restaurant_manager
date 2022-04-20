@@ -6,6 +6,7 @@ import 'package:kapte_cms/models/commande_restaurant/commande_restaurant.dart';
 import 'package:kapte_cms/models/commande_restaurant_panier/commande_restaurant_panier.dart';
 import 'package:kapte_cms/models/commande_status_restaurant.dart/commande_status_restaurant.dart';
 import 'package:kapte_cms/services/data_format.dart';
+import 'package:kapte_cms/utils.dart';
 import 'package:printing/printing.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -43,8 +44,19 @@ class _CommandeBodyState extends State<CommandeBody> {
               children: [
                 const SizedBox(width: 5.0),
                 Text(
-                  'Commande - #${widget.commandeData.id.substring(widget.commandeData.id.length - 5)}',
+                  'Commande - #${widget.commandeData.id!.substring(widget.commandeData.id!.length - 5)}',
                 ),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                widget.commandeData.paiementType == PaiementType.carte
+                    ? const Text('Commande reglée')
+                    : const Text(
+                        'COMMANDE À REGLER',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ],
             ),
             trailing: SizedBox(
@@ -94,7 +106,7 @@ class _CommandeBodyState extends State<CommandeBody> {
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
                               title: Text(
-                                  'Annuler la Commande - #${widget.commandeData.id.substring(widget.commandeData.id.length - 5)}'),
+                                  'Annuler la Commande - #${widget.commandeData.id!.substring(widget.commandeData.id!.length - 5)}'),
                               content: const Text(
                                   'Voulez-vous vraiment annuler la commande'),
                               actions: <Widget>[
@@ -157,6 +169,10 @@ class _CommandeBodyState extends State<CommandeBody> {
                   ),
                   child: ListTile(
                     title: Text(widget.commandeData.client.nom),
+                    subtitle: Text(widget.commandeData.client.email +
+                        (widget.commandeData.client.phone != null
+                            ? ' | ${widget.commandeData.client.phone}'
+                            : '')),
                   ),
                 ),
                 Container(
@@ -303,7 +319,7 @@ class _CommandeBodyState extends State<CommandeBody> {
                     style: pw.TextStyle(font: fontBold),
                   ),
                   pw.Text(
-                    '#${widget.commandeData.id.substring(widget.commandeData.id.length - 5)}',
+                    '#${widget.commandeData.id!.substring(widget.commandeData.id!.length - 5)}',
                   ),
                 ],
               ),

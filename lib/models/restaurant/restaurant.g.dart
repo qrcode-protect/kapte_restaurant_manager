@@ -19,6 +19,10 @@ Restaurant _$RestaurantFromJson(Map json) => Restaurant(
           ? null
           : Adresse.fromJson(Map<String, dynamic>.from(json['adresse'] as Map)),
       enLigne: json['enLigne'] as bool?,
+      paiements: json['paiements'] == null
+          ? null
+          : Paiements.fromJson(
+              Map<String, dynamic>.from(json['paiements'] as Map)),
     );
 
 Map<String, dynamic> _$RestaurantToJson(Restaurant instance) =>
@@ -30,4 +34,5 @@ Map<String, dynamic> _$RestaurantToJson(Restaurant instance) =>
       'description': instance.description,
       'adresse': instance.adresse?.toJson(),
       'enLigne': instance.enLigne,
+      'paiements': instance.paiements?.toJson(),
     };

@@ -84,6 +84,7 @@ class _MyDrawerState extends State<MyDrawer> {
                                         appState.utilisateur!.idRestaurant,
                                   )
                                   .where('status.termine', isEqualTo: false)
+                                  .where('status.annule', isEqualTo: false)
                                   .orderBy('date', descending: true)
                                   .snapshots(),
                               builder: (context, snapshot) {

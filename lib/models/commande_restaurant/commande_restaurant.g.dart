@@ -7,7 +7,7 @@ part of 'commande_restaurant.dart';
 // **************************************************************************
 
 CommandeRestaurant _$CommandeRestaurantFromJson(Map json) => CommandeRestaurant(
-      id: json['id'] as String,
+      id: json['id'] as String?,
       restaurant: Restaurant.fromJson(
           Map<String, dynamic>.from(json['restaurant'] as Map)),
       client: Client.fromJson(Map<String, dynamic>.from(json['client'] as Map)),
@@ -19,6 +19,7 @@ CommandeRestaurant _$CommandeRestaurantFromJson(Map json) => CommandeRestaurant(
               Map<String, dynamic>.from(e as Map)))
           .toList(),
       prixLivraison: (json['prixLivraison'] as num?)?.toDouble(),
+      paiementType: $enumDecode(_$PaiementTypeEnumMap, json['paiementType']),
     );
 
 Map<String, dynamic> _$CommandeRestaurantToJson(CommandeRestaurant instance) =>
@@ -31,4 +32,10 @@ Map<String, dynamic> _$CommandeRestaurantToJson(CommandeRestaurant instance) =>
       'restaurantCommande':
           instance.restaurantCommande.map((e) => e.toJson()).toList(),
       'prixLivraison': instance.prixLivraison,
+      'paiementType': _$PaiementTypeEnumMap[instance.paiementType],
     };
+
+const _$PaiementTypeEnumMap = {
+  PaiementType.carte: 'carte',
+  PaiementType.espece: 'espece',
+};

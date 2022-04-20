@@ -40,6 +40,7 @@ class CommandeEnCours extends ConsumerWidget {
               controller: controller,
               children: snapshot.data!.docs.map(
                 (documentSnapshot) {
+                  print(documentSnapshot.data());
                   final commandeData = CommandeRestaurant.fromJson(
                       documentSnapshot.data() as Map<String, dynamic>);
 
@@ -50,9 +51,11 @@ class CommandeEnCours extends ConsumerWidget {
                         border:
                             Border.all(color: Theme.of(context).dividerColor),
                       ),
-                      child: CommandeBody(
-                        commandeData: commandeData,
-                      ),
+                      child: commandeData.id != null
+                          ? CommandeBody(
+                              commandeData: commandeData,
+                            )
+                          : const CircularProgressIndicator(),
                     ),
                   );
                 },

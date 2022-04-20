@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kapte_cms/models/categorie/categorie.dart';
+import 'package:kapte_cms/models/paiements/paiements.dart';
 import 'package:kapte_cms/models/restaurant/restaurant.dart';
 import 'package:kapte_cms/pages/documents/documents_page.dart';
 import 'package:kapte_cms/state_management/state_management.dart';
@@ -16,6 +17,8 @@ class EtablissementState with ChangeNotifier {
   bool drawerValue = false;
   String? restaurantAvatar;
   Categorie? selectedCategorie;
+  bool? cartes;
+  bool? especes;
 
   setRestaurantAvatar(String path) {
     restaurantAvatar = path;
@@ -27,11 +30,43 @@ class EtablissementState with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<bool?> setCarte(bool? value) async {
+    if (!value! && !especes!) {
+      return false;
+    } else {
+      await FirebaseFirestore.instance
+          .collection('list_restaurant')
+          .doc(restaurant!.id)
+          .update({'paiements.carte': value});
+      cartes = value;
+      notifyListeners();
+    }
+    return true;
+  }
+
+  Future<bool?> setEspece(bool? value) async {
+    if (!value! && !cartes!) {
+      return false;
+    } else {
+      await FirebaseFirestore.instance
+          .collection('list_restaurant')
+          .doc(restaurant!.id)
+          .update({'paiements.espece': value});
+      especes = value;
+      notifyListeners();
+    }
+    return true;
+  }
+
   selectedRestaurant(Restaurant? restaurant) {
     this.restaurant = restaurant;
     if (restaurant != null) {
       restaurantAvatar = restaurant.avatar;
       selectedCategorie = restaurant.categorie;
+      if (restaurant.paiements != null) {
+        cartes = restaurant.paiements!.carte;
+        especes = restaurant.paiements!.espece;
+      }
       drawerValue = true;
     } else {
       drawerValue = false;
@@ -254,222 +289,267 @@ class _EtablissementPageState extends ConsumerState<EtablissementPage> {
                         },
                       ),
                     ),
-                    Consumer(builder: (context, ref, _) {
-                      final etablissementState =
-                          ref.watch(etablissementProvider);
-                      return etablissementState.drawerValue
-                          ? Expanded(
-                              flex: 2,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    left: BorderSide(
-                                        color: Theme.of(context).dividerColor),
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    AppBar(
-                                      backgroundColor: Theme.of(context)
-                                          .secondaryHeaderColor,
-                                      actions: [
-                                        DetailSaveButton(
-                                          onPressedSave: etablissementState
-                                                      .restaurant !=
-                                                  null
-                                              ? () {
-                                                  FirebaseFirestore.instance
-                                                      .collection(
-                                                          'list_restaurant')
-                                                      .doc(etablissementState
-                                                          .restaurant!.id)
-                                                      .update({
-                                                    'avatar': etablissementState
-                                                        .restaurantAvatar
-                                                  });
-                                                }
-                                              : null,
-                                        ),
-                                        IconButton(
-                                          onPressed: () {
-                                            ref
-                                                .read(etablissementProvider)
-                                                .selectedRestaurant(null);
-                                          },
-                                          icon: Icon(
-                                            Icons.close,
-                                            color:
-                                                Theme.of(context).primaryColor,
-                                          ),
-                                          splashRadius: 20.0,
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 220,
-                                      child: AspectRatio(
-                                        aspectRatio: 16 / 9,
-                                        child: etablissementState
-                                                .restaurantAvatar!.isNotEmpty
-                                            ? Stack(
-                                                children: [
-                                                  Container(
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            etablissementState
-                                                                .restaurantAvatar!),
-                                                        fit: BoxFit.fill,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Positioned(
-                                                    bottom: 0.0,
-                                                    right: 0.0,
-                                                    child: IconButton(
-                                                      onPressed: () =>
-                                                          showDialog(
-                                                        barrierDismissible:
-                                                            false,
-                                                        context: context,
-                                                        builder: (BuildContext
-                                                                context) =>
-                                                            const Dialog(
-                                                          elevation: 2,
-                                                          child: DocumentsPage(
-                                                            onNavigate: true,
-                                                          ),
-                                                        ),
-                                                      ).then((value) {
-                                                        if (value != null) {
-                                                          ref
-                                                              .read(
-                                                                  etablissementProvider)
-                                                              .setRestaurantAvatar(
-                                                                  value);
-                                                        }
-                                                      }),
-                                                      icon: Icon(
-                                                        Icons.photo_camera,
-                                                        color: Theme.of(context)
-                                                            .primaryColor,
-                                                      ),
-                                                      splashRadius: 20.0,
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                            : SizedBox(
-                                                child: Center(
-                                                  child: IconButton(
-                                                    icon:
-                                                        const Icon(Icons.image),
-                                                    onPressed: () => showDialog(
-                                                      barrierDismissible: false,
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          const Dialog(
-                                                        elevation: 2,
-                                                        child: DocumentsPage(
-                                                          onNavigate: true,
-                                                        ),
-                                                      ),
-                                                    ).then((value) {
-                                                      if (value != null) {
-                                                        ref
-                                                            .read(
-                                                                etablissementProvider)
-                                                            .setRestaurantAvatar(
-                                                                value);
-                                                      }
-                                                    }),
-                                                  ),
-                                                ),
-                                              ),
-                                      ),
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Text(
-                                            'Selectionner la categorie:'),
-                                        StreamBuilder<
-                                                QuerySnapshot<
-                                                    Map<String, dynamic>>>(
-                                            stream: FirebaseFirestore.instance
-                                                .collection(
-                                                    'list_restaurants_categorie')
-                                                .snapshots(),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState ==
-                                                  ConnectionState.active) {
-                                                if (snapshot.hasData) {
-                                                  List<
-                                                          DropdownMenuItem<
-                                                              Categorie>>
-                                                      listItems = snapshot
-                                                          .data!.docs
-                                                          .map((e) {
-                                                    Categorie categorie =
-                                                        Categorie.fromJson(
-                                                            e.data());
-                                                    return DropdownMenuItem<
-                                                        Categorie>(
-                                                      child: Text(
-                                                          categorie.nom != null
-                                                              ? categorie.nom!
-                                                              : categorie.id!),
-                                                      value: categorie,
-                                                    );
-                                                  }).toList();
-                                                  return DropdownButton<
-                                                      Categorie>(
-                                                    items: listItems,
-                                                    selectedItemBuilder:
-                                                        (context) {
-                                                      return listItems;
-                                                    },
-                                                    // value: etablissementState
-                                                    //     .selectedCategorie,
-                                                    onChanged:
-                                                        (Categorie? value) {
-                                                      etablissementState
-                                                          .setSelectedCategorie(
-                                                              value);
-                                                      if (value != null) {
-                                                        FirebaseFirestore
-                                                            .instance
-                                                            .collection(
-                                                                'list_restaurant')
-                                                            .doc(
-                                                                etablissementState
-                                                                    .restaurant!
-                                                                    .id)
-                                                            .update({
-                                                          'categorie':
-                                                              value.toJson()
-                                                        });
-                                                      }
-                                                    },
-                                                  );
-                                                }
-                                              }
-                                              return const Padding(
-                                                padding: EdgeInsets.all(8.0),
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            }),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          : SizedBox.fromSize();
-                    })
+                    const EtablissementTab(),
                   ],
                 ),
     );
+  }
+}
+
+class EtablissementTab extends StatelessWidget {
+  const EtablissementTab({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer(builder: (context, ref, _) {
+      final etablissementState = ref.watch(etablissementProvider);
+      return etablissementState.drawerValue
+          ? Expanded(
+              flex: 2,
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border(
+                    left: BorderSide(color: Theme.of(context).dividerColor),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    AppBar(
+                      backgroundColor: Theme.of(context).secondaryHeaderColor,
+                      actions: [
+                        DetailSaveButton(
+                          onPressedSave: etablissementState.restaurant != null
+                              ? () {
+                                  FirebaseFirestore.instance
+                                      .collection('list_restaurant')
+                                      .doc(etablissementState.restaurant!.id)
+                                      .update({
+                                    'avatar':
+                                        etablissementState.restaurantAvatar
+                                  });
+                                }
+                              : null,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            ref
+                                .read(etablissementProvider)
+                                .selectedRestaurant(null);
+                          },
+                          icon: Icon(
+                            Icons.close,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          splashRadius: 20.0,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 220,
+                      child: AspectRatio(
+                        aspectRatio: 16 / 9,
+                        child: etablissementState.restaurantAvatar!.isNotEmpty
+                            ? Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(etablissementState
+                                            .restaurantAvatar!),
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 0.0,
+                                    right: 0.0,
+                                    child: IconButton(
+                                      onPressed: () => showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            const Dialog(
+                                          elevation: 2,
+                                          child: DocumentsPage(
+                                            onNavigate: true,
+                                          ),
+                                        ),
+                                      ).then((value) {
+                                        if (value != null) {
+                                          ref
+                                              .read(etablissementProvider)
+                                              .setRestaurantAvatar(value);
+                                        }
+                                      }),
+                                      icon: Icon(
+                                        Icons.photo_camera,
+                                        color: Theme.of(context).primaryColor,
+                                      ),
+                                      splashRadius: 20.0,
+                                    ),
+                                  )
+                                ],
+                              )
+                            : SizedBox(
+                                child: Center(
+                                  child: IconButton(
+                                    icon: const Icon(Icons.image),
+                                    onPressed: () => showDialog(
+                                      barrierDismissible: false,
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          const Dialog(
+                                        elevation: 2,
+                                        child: DocumentsPage(
+                                          onNavigate: true,
+                                        ),
+                                      ),
+                                    ).then((value) {
+                                      if (value != null) {
+                                        ref
+                                            .read(etablissementProvider)
+                                            .setRestaurantAvatar(value);
+                                      }
+                                    }),
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Selectionner la categorie : ',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                          stream: FirebaseFirestore.instance
+                              .collection('list_restaurants_categorie')
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.active) {
+                              if (snapshot.hasData) {
+                                List<DropdownMenuItem<Categorie>>
+                                    categorieItems =
+                                    snapshot.data!.docs.map((e) {
+                                  Categorie categorie =
+                                      Categorie.fromJson(e.data());
+                                  return DropdownMenuItem<Categorie>(
+                                    child: Text(categorie.nom != null
+                                        ? categorie.nom!
+                                        : categorie.id!),
+                                    value: categorie,
+                                  );
+                                }).toList();
+
+                                return DropdownButton<Categorie>(
+                                  icon: const Icon(Icons.arrow_downward),
+                                  elevation: 16,
+                                  onChanged: (Categorie? newValue) {
+                                    etablissementState
+                                        .setSelectedCategorie(newValue);
+                                  },
+                                  selectedItemBuilder: (context) {
+                                    return snapshot.data!.docs.map((e) {
+                                      Categorie categorie =
+                                          Categorie.fromJson(e.data());
+                                      return Text(categorie.nom != null
+                                          ? categorie.nom!
+                                          : categorie.id!);
+                                    }).toList();
+                                  },
+                                  items: categorieItems,
+                                );
+                              }
+                            }
+                            return const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                    const Divider(),
+                    const Text(
+                      'Types de paiements acceptés : ',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Cartes bancaires :'),
+                        Checkbox(
+                            value: etablissementState.cartes,
+                            onChanged: (value) async {
+                              bool? canUpdate =
+                                  await etablissementState.setCarte(value);
+                              if (canUpdate != null) {
+                                if (!canUpdate) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text(
+                                          'Problème lors du changement'),
+                                      content: const Text(
+                                          'Vous ne pouvez pas refuser tous les types de paiements'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('Ok'),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }
+                              }
+                            }),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text('Espèces :'),
+                        Checkbox(
+                            value: etablissementState.especes,
+                            onChanged: (value) async {
+                              bool? canUpdate =
+                                  await etablissementState.setEspece(value);
+                              if (canUpdate != null) {
+                                if (!canUpdate) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text(
+                                          'Problème lors du changement'),
+                                      content: const Text(
+                                          'Vous ne pouvez pas refuser tous les types de paiements'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('Ok'),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }
+                              }
+                            }),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : SizedBox.fromSize();
+    });
   }
 }
