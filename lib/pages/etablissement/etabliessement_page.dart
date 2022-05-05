@@ -34,10 +34,6 @@ class EtablissementState with ChangeNotifier {
     if (!value! && !especes!) {
       return false;
     } else {
-      await FirebaseFirestore.instance
-          .collection('list_restaurant')
-          .doc(restaurant!.id)
-          .update({'paiements.carte': value});
       cartes = value;
       notifyListeners();
     }
@@ -48,10 +44,6 @@ class EtablissementState with ChangeNotifier {
     if (!value! && !cartes!) {
       return false;
     } else {
-      await FirebaseFirestore.instance
-          .collection('list_restaurant')
-          .doc(restaurant!.id)
-          .update({'paiements.espece': value});
       especes = value;
       notifyListeners();
     }
@@ -66,12 +58,28 @@ class EtablissementState with ChangeNotifier {
       if (restaurant.paiements != null) {
         cartes = restaurant.paiements!.carte;
         especes = restaurant.paiements!.espece;
+      } else {
+        cartes = false;
+        especes = false;
       }
       drawerValue = true;
     } else {
       drawerValue = false;
     }
     notifyListeners();
+  }
+
+  Future<void> updateRestaurant() async {
+    await FirebaseFirestore.instance
+        .collection('list_restaurant')
+        .doc(restaurant!.id)
+        .update({
+      'avatar': restaurantAvatar,
+      'paiements':
+          Paiements(carte: cartes ?? false, espece: especes ?? false).toJson(),
+      'categorie':
+          selectedCategorie != null ? selectedCategorie!.toJson() : null,
+    });
   }
 }
 
@@ -103,7 +111,9 @@ class _EtablissementPageState extends ConsumerState<EtablissementPage> {
                             AsyncSnapshot<DocumentSnapshot>
                                 restaurantSnapshot) {
                           if (restaurantSnapshot.hasError) {
-                            return const Center(child: Text('error'));
+                            return const Center(
+                              child: Text('error'),
+                            );
                           }
                           if (restaurantSnapshot.connectionState ==
                               ConnectionState.waiting) {
@@ -321,14 +331,8 @@ class EtablissementTab extends StatelessWidget {
                       actions: [
                         DetailSaveButton(
                           onPressedSave: etablissementState.restaurant != null
-                              ? () {
-                                  FirebaseFirestore.instance
-                                      .collection('list_restaurant')
-                                      .doc(etablissementState.restaurant!.id)
-                                      .update({
-                                    'avatar':
-                                        etablissementState.restaurantAvatar
-                                  });
+                              ? () async {
+                                  await etablissementState.updateRestaurant();
                                 }
                               : null,
                         ),

@@ -17,7 +17,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final utilisateur = ref.watch(appStateProvider).utilisateur;
     final administrateur = ref.watch(appStateProvider).administrateur;
-    print(administrateur);
     return administrateur
         ? Scaffold(
             body: Padding(
@@ -74,33 +73,35 @@ class AccueilHeader extends StatelessWidget {
             restaurantSnapshot.data!.data() as Map<String, dynamic>);
         return Column(
           children: [
-            Row(
-              children: [
-                Text(
-                  'Bonjour, ${restaurant.nom!}',
-                  style: Theme.of(context).textTheme.headline2!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-                const SizedBox(width: 10),
-                ClipOval(
-                  child: Container(
-                    height: 25,
-                    width: 25,
-                    child: Center(
-                      child: Text(
-                        '4.7',
-                        style: Theme.of(context).textTheme.headline6!.copyWith(
-                              fontSize: 9.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                    ),
-                    color: Theme.of(context).secondaryHeaderColor,
+            // Row(
+            //   children: [
+            Text(
+              'Bonjour, ${restaurant.nom!}',
+              style: Theme.of(context).textTheme.headline2!.copyWith(
+                    fontWeight: FontWeight.bold,
+                    overflow: TextOverflow.fade,
                   ),
-                ),
-              ],
+              softWrap: true,
             ),
+            // const SizedBox(width: 10),
+            // ClipOval(
+            //   child: Container(
+            //     height: 25,
+            //     width: 25,
+            //     child: Center(
+            //       child: Text(
+            //         '4.7',
+            //         style: Theme.of(context).textTheme.headline6!.copyWith(
+            //               fontSize: 9.0,
+            //               fontWeight: FontWeight.bold,
+            //             ),
+            //       ),
+            //     ),
+            //     color: Theme.of(context).secondaryHeaderColor,
+            //   ),
+            // ),
+            //   ],
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20.0),
               child: Row(
